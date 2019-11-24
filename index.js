@@ -12,7 +12,7 @@ const Room = require("./models/room");
 const csrf = require("csurf");
 const MongoDBStore = require('connect-mongodb-session')(session);
 const Mongo_uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0-hax06.mongodb.net/${process.env.MONGO_DATABASE}?retryWrites=true&w=majority`;
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4000;
 const route = require("./routes/routes");
 const User = require("./models/user");
 const multer = require("multer");
