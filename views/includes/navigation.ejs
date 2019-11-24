@@ -1,0 +1,58 @@
+<link rel="shortcut icon" href="/assets/cotast AI.png" type="image/png" />
+<link rel="shortcut icon" href="/assets/cotast AI.svg"  />
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/thome">Cotast </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ">
+        <li class="<%= path === 'chat' ? 'nav-item active' : 'nav-item' %>">
+          <a class="nav-link" href="/tchat"><i class="fas fa-comments"></i> Chat<span class="sr-only">(current)</span></a>
+        </li>
+        
+        <li class="<%= path === 'profil' ? 'nav-item active' : 'nav-item' %>">
+          <a class="nav-link " href="/tprofil"><i class="fas fa-user-circle"></i> Profil</a>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-users"></i> Abonnés
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <% if (followers.length > 0) { %>
+                  <% for (let follower of followers){%>
+                    
+                      <button class="dropdown-item" type="button" ><%= follower.username %></button>
+
+                    <%}%>
+                    <%}else{%>
+                      <div class="text-danger text-center">Pas d abonnés</div>
+                      <%}%>
+             
+              
+            </div>
+          </li>
+          <% if(path === "chat"){ %>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Groupes
+                </a>
+                <div class="dropdown-menu " aria-labelledby="navbarDropdownMenuLink">
+                  
+                <% if(rooms.length > 0){%>
+                  <% for (let room of rooms){%>
+                     <a class="dropdown-item " href="/room/<%= room._id%>"><%= room.roomname %></a>
+                    <%}%>
+                    <%}else{%>
+                      <div class="dropdown-item  text-danger text-center">Pas de groupes</div>
+                   
+                      
+                      <%}%>
+                       </div>
+               
+            </li>
+            <%}%>
+      </ul>
+    </div>
+  </nav>
+  

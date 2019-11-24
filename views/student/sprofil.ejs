@@ -1,0 +1,170 @@
+<%- include("../includes/head.ejs"); %>
+
+<body>
+        <%- include("../includes/body.ejs"); %>
+        <%- include("../includes/navigation3.ejs"); %>
+        <div class="container">
+                <div class="row ">
+                    <br>
+                    <div class="col-md-6 offset-md-3 col-sm-12 bg-white" style="margin-top: 10px; ">
+                        <ul class="nav nav-tabs">
+                            <li class="nav-item">
+                                <a href="" data-target="#profile" data-toggle="tab" class="nav-link <%= editMode === 'true' ? '' : 'active' %>">Profil</a>
+                            </li>
+                            
+                            <li class="nav-item">
+                                <a href="" data-target="#edit" data-toggle="tab" class="nav-link <%= editMode === 'true' ? 'active' : '' %>">
+                                    Modifier</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content py-4">
+                            <div class="tab-pane <%= editMode === 'true' ? '' : 'active'%>" id="profile">
+                                <h1><i class="fas fa-user-circle"></i><h5 class="mb-4">
+                                        Profil</h5></h1>
+                                
+                                <div class="row">
+                                    <div class="col-md-7">
+                                        <h5 class="text-primary"> <%= username%></h5>
+                                        <h5 class="text-secondary"> <%= email%></h5>
+                                        <h6 class="text-secondary"><%= school%></h6>
+                                        
+                                    </div>
+                                    <div class="col-md-4">
+                                            <button type="submit" class="btn btn-outline-danger " 
+                                             onclick="logout(this,'<%= csrfToken%>')"><i class="fas fa-sign-out-alt"></i></button>
+
+                                    </div>
+                                    
+                                </div>
+                                <!--/row-->
+                            </div>
+                            
+                            <div class="tab-pane <%= editMode === 'true' ? 'active' : '' %>" id="edit">
+                                <form role="form" action="/edit-student" method="POST">
+                                    <div class="form-group row">
+                                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                        <label class="col-lg-3 col-form-label form-control-label" for="username">
+                                            Nom d'utilisateur</label>
+                                        <div class="col-lg-9">
+                                            <input class="form-control" type="text" id="username" name="username" value="<%= username%>">
+                                        </div>
+                                    </div>
+                                   
+                                   
+                                    <div class="form-group row">
+                                            <label class="col-lg-3 col-form-label form-control-label">lycée</label>
+                                            <div class="col-lg-9">
+                                                <select id="user_time_zone" class="form-control" size="0" name="school">
+                                                        <option value="<%=school%>" ><%= school%></option>
+                                                    <option value="Khaznadar">Khaznadar</option>
+                                                    <option value="Rue de russie">Rue de russie</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        
+                                    
+                                    <div class="form-group row">
+                                        <label class="col-lg-3 col-form-label form-control-label"></label>
+                                        <div class="col-lg-9">
+                                            <input type="reset" class="btn btn-secondary" value="Annuler">
+                                            <input type="submit" class="btn btn-primary" value="Sauvegarder">
+                                        </div>
+                                    </div>
+                                </form>
+                                <% if(message2){%>
+                                    <div class="alert alert-secondary"><%= message2 %></div>
+                                    <%}%>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 offset-md-3 col-sm-12">
+                            <h1 class="text-muted text-center">
+                                Organiser vos fichiers</h1>
+                            <br>
+                            <div id="formfolder">
+                                    <form class="form-inline" action="/create-folder" method="POST">
+                                            <div class="input-group col-md-6 offset-md-3 col-sm-12">
+                                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                                    <input type="text" class="form-control" placeholder="Nom de dossier" name="foldername"  aria-describedby="basic-addon2" style="background-color: #e9ebee;">
+                                                    <div class="input-group-append">
+                                                      <button class="btn btn-outline-secondary" type="submit"><i class="fas fa-plus"></i></button>
+                                                    </div>
+                                                  </div>
+                                    </form>
+                                    <% if(message){%>
+                                        <br>
+                                    <div class="alert alert-secondary"><%= message %></div>
+                                    <%}%>
+    
+                            </div>
+                            <br>
+                            <div id="fileOrganization">
+                                    <% if (folders.length > 0) { %>
+                                        <% for (let folder of folders){%>
+                                            <span class="badge badge-dark" type="button" data-toggle="collapse" data-target="#<%= folder.foldername%>" aria-expanded="false" aria-controls="collapseExample"><i class="fas fa-folder" ></i> <%= folder.foldername%></span>
+                                            <div class="collapse" id="<%= folder.foldername%>">
+                                                    <br>
+                                                      <div class="">
+                                                            <ul class="list-group list-group-flush">
+                                                            <% for (let content of folder.contents){%>
+                                                                
+                                                                <li class="list-group-item"> <a href="<%= content%>" class="text-success text-left"><script>var str = "<%= content%>"; 
+                                                                document.write(str.slice(33,str.length));
+                                                                </script></a></li>
+                                                                <%}%>
+                                                            </ul>
+                                                      </div>
+                                                    </div>
+                                            <%}%>
+                                            <%}else{%>
+                                                <div class="alert alert-dark text-center" role="alert">
+                                                        You have no folders
+                                                      </div>
+                                                <%}%>
+                           
+                            
+                                  <!-- <span class="badge badge-dark" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><i class="fas fa-folder" ></i> math</span>
+                                  
+                                  <div class="collapse" id="collapseExample">
+                                      <br>
+                                        <div class="">
+                                                <ul class="list-group list-group-flush">
+                                                        <li class="list-group-item"><a href="../../images/pdf.png" class="text-success">serie Math</a></li>
+                                                        <li class="list-group-item">serie Math</li>
+                                                        <li class="list-group-item">serie Math</li>
+                                                        <li class="list-group-item">serie Math</li>
+                                                        <li class="list-group-item">serie Math</li>
+                                                      </ul>
+                                        </div>
+                                      </div>
+                                      
+                                      <span class="badge badge-dark" type="button" data-toggle="collapse" data-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample"><i class="fas fa-folder" ></i> math</span>
+                                      
+                                          <div class="collapse" id="collapseExample2">
+                                                <br>
+                                                <div class="">
+                                                        <ul class="list-group list-group-flush">
+                                                                <li class="list-group-item">serie Physique</li>
+                                                                <li class="list-group-item">serie Physique</li>
+                                                                <li class="list-group-item">serie Physique</li>
+                                                                <li class="list-group-item"><a href="../../images/pdf.png" class="text-success">serie Math</a></li>
+                                                                <li class="list-group-item">serie Physique</li>
+                                                              </ul>
+                                                </div>
+                                              </div> -->
+                    </div>
+
+                </div>
+                    </div>
+                    
+                    </div>
+                   
+                    <%- include("../includes/footer.ejs");%>
+                    
+                    
+</body>
+<%- include("../includes/script.ejs");%>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script> 
+<script src="/js/logout2.js"></script>
+</html>

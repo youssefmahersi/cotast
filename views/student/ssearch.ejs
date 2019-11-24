@@ -1,0 +1,125 @@
+<%- include("../includes/head.ejs"); %>
+
+<body>
+        <%- include("../includes/body.ejs"); %>
+        <script src="/js/moment/moment.js"></script>
+        <%- include("../includes/momentf.ejs"); %>
+        <%- include("../includes/navigation3.ejs"); %>
+
+        <div class="container">
+            <div class="row ">
+                <br>
+                <div class="col-md-6 offset-md-3 col-sm-12 bg-white rounded" style="margin-top: 10px; ">
+                    <h1><i class="fas fa-user-circle"></i><h5 class="mb-4">profil</h5></h1>
+                    <div class="row">
+                        <div class="col-md-7">
+                            <h5 class="text-primary"> <%= teacher.username%></h5>
+                            <h5 class="text-secondary"> <%= teacher.email%></h5>
+                            <h6 class="text-secondary"><%= teacher.school%></h6>
+                            
+                            <button type="button" class="btn btn-danger text-dark" style="margin: 10px;" onclick="follow(this,'<%= teacher._id%>','<%= csrfToken %>')"><i class="fas fa-plus-circle" ></i> suivre</button>
+                          
+                        </div>
+                        <div class="col-md-4">
+                            <span class="badge badge-primary" style="margin: 5px;"><i class="fa fa-user"></i> <%= followers%> Elèves</span>
+                            <span class="badge badge-danger" style="margin: 5px;"><i class="fas fa-file" ></i> <%= numposts%> Publications</span>
+                            <br>
+                            
+                            
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+                
+            </div>
+            <br>
+            <div class="col-md-6 offset-md-3 col-sm-12 ">
+              <h1 class="text-muted text-center">Publications</h1>
+              
+              
+              <% if (posts.length > 0) { %>
+                <% for (let post of posts){%>
+                  <% if(post.type === "application/pdf"){%>
+                    <div class="p-3 mb-2 bg-white border" id="post">
+                      <h3 class="text-left" style="color: #0087bd;"><i class="far fa-user-circle" style="color: black;"></i> <%= post.creator.username%></h3>
+                      
+                      <div class="row">
+                          <div class="col-md-2">
+                              <img src="https://assets.jimstatic.com/s/img/cc/icons/pdf.png" alt="">
+                          </div>
+                          <div class="col-md-10">
+                          <p><%= post.comment%></p>
+                          
+                          <p><script>document.write( renderDate(Number('<%= post.createdAt%>')));</script></p>
+                          <div class="btn-group" role="group" aria-label="Basic example">
+                              <a class="btn btn-primary" href="<%= post.filename%>" target="_blank"><i class="fas fa-eye"> </i> Lire</a>
+                              <a class="btn btn-primary" href="<%= post.filename%>" download><i class="fas fa-upload"></i> Telecharger</a>
+                              <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#collapse<%= post._id%>" aria-expanded="false" aria-controls="collapseExample">
+                                  <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                      </div>
+                  
+                  
+                    
+                   
+                    <div class="collapse" id="collapse<%= post._id%>">
+                      <br>
+                      
+                      <div class="">
+                          <% if (folders.length > 0) { %>
+                            <% for (let folder of folders){%>
+                              
+                              
+                              <input type="hidden" value="<%= post._id%>" name="postId"> 
+                                <input type="hidden" value="<%= post.filename%>" name="filename" id="file<%= post._id%>">
+                                <input type="hidden" value="<%= folder.foldername%>" name="foldername" id="folder<%= post._id%>">
+                                
+                          <button class="badge badge-dark" type="button" data-toggle="collapse" data-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample" onclick="addContent(this,'<%= folder.foldername%>','<%= post.filename%>','<%= csrfToken%>')"><i class="fas fa-folder" ></i>  <%= folder.foldername%></button>
+                          <div class="" id="addmessage"></div>
+                       
+                          <%}%>
+                    <%}else{%>
+                      <div class="alert alert-dark ">there is no folders</div>
+                      <%}%> 
+                      </div>
+                    </div>
+                    
+                  
+                  
+                </div>  
+                    <%}else{%>
+                    <div class="p-3 mb-2 bg-white border" id="post">
+                      <h3 class="text-left" style="color: #0087bd;"><i class="far fa-user-circle" style="color: black;"></i> <%= post.creator.username%></h3>
+                      
+                      <p class="text-left"><%= post.comment%></p>
+                  <img src="<%= post.filename%>" class="img-fluid rounded mx-auto d-block" alt="Responsive image"  style="width: 100%;
+                  ">
+                  <br>
+                  <p><script>document.write( renderDate(Number('<%= post.createdAt%>')));</script></p>
+                  <div class="btn-group" role="group" aria-label="Basic example">
+                            <a class="btn btn-warning" href="<%= post.filename%>" role="button" download><i class="fas fa-upload"></i></a>
+                           
+                          </div>
+                </div>
+
+                <%}}%>
+                <%}else{%>
+                  <div class="alert alert-dark text-center" role="alert">
+                      Pas de publications
+                    </div>
+                  <%}%>
+                                          
+</div>
+            
+            </div>
+       
+            <%- include("../includes/footer.ejs");%>
+        </body>
+        <%- include("../includes/script.ejs");%> 
+        <script src="/js/add-content.js"></script>
+        <script src="/js/follow.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+        </html>

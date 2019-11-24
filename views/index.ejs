@@ -1,0 +1,89 @@
+<%- include("includes/head.ejs"); %>
+<body>
+        <%- include("includes/body.ejs"); %>
+  <%-include("includes/navigation2.ejs"); %>
+    
+
+      <% if (message) { %>
+        <br>
+        <div class="col-md-6 offset-md-3 col-sm-12">
+            <div class="alert alert-danger text-center" role="alert" ><%= message %></div>
+        </div>
+        
+    <% } %>
+    <div class="container">
+        <div class="row">
+          <div class="col-md-6">
+              <div class="" style="padding: 10px;">
+                <h2 class="text-center" style="font-family:serif;">Connecter ensemble
+                 <br> les enseignants et les élèves</h2>
+                <br>
+               <h4 class="text-muted text-center"><i class="fab fa-connectdevelop "></i> Connecter ensemble</h4>
+               <br>
+               <h4 class="text-muted text-center"><i class="fas fa-comment-dots"></i> Chat </h4>
+               <br>
+               <h4 class="text-muted text-center"><i class="fas fa-share-alt"></i> 
+                partagez votre travail </h4>
+               <br>
+               <h4 class="text-muted text-center"><i class="fas fa-cloud"></i> Enregistrez votre travail  <span>chez cotast</span> </h4>
+                </div>
+          </div>
+                <!-- col-md-4 -->
+                <div class="col-md-6">
+                        <h2 class="text-left " style="font-family:serif;" style="padding: 5px;">S'inscrire</h2>
+                      <div class="" style="padding: 10px;">
+                        
+                  
+                    <br>
+                    <div class="form-group">
+                      
+                      <input type="text" class="form-control" id="Inputusername" name = "username" aria-describedby="emailHelp" value="" placeholder="Saisissez votre nom d'utilisateur">          
+                    </div>
+                    <div class="form-group">
+                      
+                      <input type="email" class="form-control" id="InputEmail" name="emails"  placeholder="Saisissez votre email">          
+                    </div>
+                    <div class="form-group">
+                      
+              <select class="form-control" id="InputSchool" name = "school">
+                  <option value="">Lycée</option>
+                      <option value="Khaznadar">Khaznadar</option>
+                      <option value="Rue de russie">Rue de russie</option>
+                    </select>
+                  </div>
+                    
+                    <div class="form-group">
+                            
+                    <select class="form-control" id="InputSelect" name = "status">
+                      <option value="">Inscrivez-vous en tant que </option>
+                            <option value="Teacher">Enseignant</option>
+                            <option value="Student">Elève</option>
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          
+                          <input type="password" class="form-control" name = "passwords" id="InputPassword" placeholder="Saisir votre Password">
+                        </div>
+                        <div class="form-group">
+                           
+                            <input type="password" class="form-control" name = "passwordconfirm" id="InputConfirmPassword" placeholder="Confirmez votre mot de passe">
+                          </div>
+                        
+                    <button type="button" class="btn btn-primary" onclick="signup(this,'<%= csrfToken %>')">
+                        S'inscrire</button>
+                 
+                </div>
+               
+                </div>
+        </div>
+
+    </div>
+    <%- include("includes/footer.ejs");%>
+       
+</body>
+<%- include("includes/script.ejs");%>
+
+<script src="/js/signup.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+</html>

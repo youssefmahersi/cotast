@@ -1,0 +1,105 @@
+<%- include("includes/head.ejs"); %>
+<body>
+        <%- include("includes/body.ejs"); %>
+        <script src="/js/moment/moment.js"></script>
+        <script>
+            function renderDate(value){
+                var formattedTime = moment(value).format('MMMM Do YYYY, h:mm');
+    
+            return formattedTime;
+            }
+            function linkify(text) {
+  var urlRegex =/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+  return text.replace(urlRegex, function(url) {
+      return '<a href="' + url + '" style="color :red;">' + url + '</a>';
+  });
+}
+            </script>
+        <style>
+                #messages{height:350px; overflow:auto;}
+                #status{height:100px; overflow:auto;}
+                
+            </style>
+    <link rel="shortcut icon" href="/assets/cotast AI.png" type="image/png" />
+    <link rel="shortcut icon" href="/assets/cotast AI.svg"  />
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="/thome">Cotast </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ">
+            <li class="<%= path === 'chat' ? 'nav-item active' : 'nav-item' %>">
+              <a class="nav-link" href="<%= status === 'teacher' ? '/tchat' : '/schat' %>"><i class="fas fa-comments"></i> Chat<span class="sr-only">(current)</span></a>
+            </li>
+            
+            <li class="<%= path === 'profil' ? 'nav-item active' : 'nav-item' %>">
+              <a class="nav-link " href="<%= status === 'teacher' ? '/tprofil' : '/sprofil' %>"><i class="fas fa-user-circle"></i> Profil</a>
+            </li>
+           
+                
+              
+          </ul>
+        </div>
+      </nav>
+      
+    <br>
+
+    <div class="container">
+        <div class="row" >
+          <input type="hidden" name="envVariable" value="<%= envVariable %>">
+        
+            <div class="col-md-6 offset-md-3 col-sm-12">
+    <div class="text-center">          
+   
+                <div class="p-3 mb-2 ">
+                    <h1 class="text-center">Chat</h1>
+                    <div class="card" id="card">
+                    <div id="messages" class="card-block bg-light"> 
+                    
+                        <% if(rooms.messages.length > 0){%>
+                          <% for(let room of rooms.messages){%>
+                            <div class="p-3 mb-2 bg-light text-dark border border-secondary rounded " style="margin : 3px; padding: 3px;">
+                                    <p class="text-black text-left"><i class="far fa-user"></i> <%= room.username%> : <span class="text-left bg-primary text-white rounded" style="padding: 4px;"><script>document.write(linkify("<%= room.message%>"));</script></span></p>
+                                    <p class="text-left"><script>document.write( renderDate(Number('<%= room.messagetime%>')));</script></p>
+                            </div>
+                        <%}%>
+                           <%}%>
+                        </div>
+                    </div>
+                        <br>
+                        <div class="input-group mb-3 border border-secondary rounded">
+                                <input type="text" class="form-control" placeholder="Write your message" aria-label="Recipient's username" name="message" aria-describedby="basic-addon2">
+                                <input type="hidden" id="username2" value="<%= username%>">
+                                <div class="input-group-append">
+                                  <button class="btn btn-outline-primary" type="button" onclick="sendMessage(this,'<%= roomId%>','<%= username%>')"><i class="fas fa-paper-plane"></i></button>
+                                </div>
+                              </div>
+                    
+                </div>
+                </div>
+                
+                <div class="p-3 mb-2 ">
+                    <div class="card" id="card">
+                    <div class="card-block bg-light" id="status">
+    
+                    </div>
+                      
+                      </div>
+                    </div>
+            </div>
+            
+            
+            
+        </div>
+
+        <%- include("includes/footer.ejs");%>
+</body>
+
+<%- include("includes/script.ejs");%> 
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/chat.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+</html>

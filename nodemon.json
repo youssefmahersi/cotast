@@ -1,0 +1,11 @@
+{
+    "env" : {
+       "MONGO_USER" : "youssef",
+       "MONGO_PASSWORD" : "01GFuM4ZsIuPfUas",
+       "MONGO_DATABASE" : "cotast",
+       "PORT" : "5018",
+       "CRYPTR_KEY" : "youssefmahersi",
+       "API_KEY" : "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",
+       "DOMAIN_NAME" : "http://localhost"
+    }
+}

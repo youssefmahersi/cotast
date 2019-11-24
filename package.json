@@ -1,0 +1,43 @@
+{
+  "name": "cotast",
+  "version": "1.0.0",
+  "description": "helps students in school",
+  "main": "index.js",
+  "engines": {
+    "node" : "12.13.0"
+  },
+  "scripts": {
+    "start": "node index",
+    "dev": "nodemon index"
+  },
+  "author": "youssef mahersi",
+  "license": "ISC",
+  "dependencies": {
+    "@sendgrid/mail": "^6.4.0",
+    "bcrypt": "^3.0.6",
+    "body-parser": "^1.19.0",
+    "compression": "^1.7.4",
+    "connect-flash": "^0.1.1",
+    "connect-mongodb-session": "^2.2.0",
+    "cryptr": "^4.0.2",
+    "csurf": "^1.10.0",
+    "ejs": "^2.7.1",
+    "express": "^4.17.1",
+    "express-session": "^1.16.2",
+    "express-validator": "^6.2.0",
+    "helmet": "^3.21.2",
+    "hogan.js": "^3.0.2",
+    "moment": "^2.24.0",
+    "mongoose": "^5.6.12",
+    "morgan": "^1.9.1",
+    "multer": "^1.4.2",
+    "nodemailer": "^6.3.1",
+    "nodemailer-sendgrid-transport": "^0.2.0",
+    "pdfkit": "^0.10.0",
+    "socket.io": "^2.3.0",
+    "socket.io-client": "^2.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.2"
+  }
+}
