@@ -7,7 +7,7 @@
     "node" : "12.13.0"
   },
   "scripts": {
-    "start": "NODE_ENV=production MONGO_USER=youssef MONGO_PASSWORD=01GFuM4ZsIuPfUas MONGO_DATABASE=cotast API_KEY=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 DOMAIN_NAME=http://localhost PORT=3000 CRYPTR_KEY=youssefmahersi node index",
+    "start": "NODE_ENV=production MONGO_USER=youssef MONGO_PASSWORD=01GFuM4ZsIuPfUas MONGO_DATABASE=cotast API_KEY=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  PORT=3000 CRYPTR_KEY=youssefmahersi node index",
     "dev": "nodemon index"
   },
   "author": "youssef mahersi",
