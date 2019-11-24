@@ -186,7 +186,7 @@ exports.postUplaod = (req,res,next)=>{
                 from : "cotast",
                 subject :"New post",
                 html :`<h1 style="text-align:center; font-family:courier,arial,helvetica;">Votre enseignant ${req.user.username} a ajouté une publication </h1><br>
-                <div style="display: inline-block; text-align:center;"><a href="${process.env.DOMAIN_NAME}:${process.env.PORT}/profil/${req.user._id}" style="background-color: #f44336;
+                <div style="display: inline-block; text-align:center;"><a href="${process.env.DOMAIN_NAME}/profil/${req.user._id}" style="background-color: #f44336;
                 color: white;
                 
                 margin :auto;
