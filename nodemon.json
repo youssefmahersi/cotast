@@ -5,6 +5,7 @@
        "MONGO_DATABASE" : "cotast",
        "CRYPTR_KEY" : "youssefmahersi",
        "API_KEY" : "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",
-       "DOMAIN_NAME" : "http://localhost"
+       "DOMAIN_NAME" : "http://localhost",
+       "PORT" :"3000"
     }
 }

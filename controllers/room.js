@@ -1,6 +1,6 @@
 const Room = require("../models/room");
 const Cryptr = require('cryptr');
-const cryptr = new Cryptr("youssefmahersi");
+const cryptr = new Cryptr(`${process.env.CRYPTR_KEY}`);
 exports.getRoom = (req,res,next)=>{
     Room.findOne({_id : req.params.roomId}).then(room=>{
         room.messages.forEach(element => {
@@ -17,7 +17,7 @@ exports.getRoom = (req,res,next)=>{
                 status : "teacher",
                 roomId : req.params.roomId,
                 username : req.user.username,
-                envVariable :process.env.DOMAIN_NAME
+                envVariable :`${process.env.DOMAIN_NAME}:${process.env.PORT}`
             })
             
         }else if(check.length >0){
