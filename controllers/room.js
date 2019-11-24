@@ -1,6 +1,6 @@
 const Room = require("../models/room");
 const Cryptr = require('cryptr');
-const cryptr = new Cryptr(process.env.CRYPTR_KEY);
+const cryptr = new Cryptr("youssefmahersi");
 exports.getRoom = (req,res,next)=>{
     Room.findOne({_id : req.params.roomId}).then(room=>{
         room.messages.forEach(element => {

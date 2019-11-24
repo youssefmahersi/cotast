@@ -1,6 +1,6 @@
 var envVariable = document.querySelector('[name=envVariable]').value;
 console.log(envVariable)
-var socket = io.connect(envVariable+":5018");
+var socket = io.connect(envVariable);
 
 const messageContainer = document.getElementById("messages");
 const statusContainer = document.getElementById("status");
