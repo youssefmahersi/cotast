@@ -18,11 +18,11 @@ exports.getIndex = (req,res,next)=>{
 
 
 exports.postSignup = (req,res,next)=>{
-    const username = req.body.username;
-    const email = req.body.email;
+    const username = req.body.username.toLowerCase();
+    const email = req.body.email.toLowerCase();
     const school = req.body.school;
     const status = req.body.status;
-    const password = req.body.password;
+    const password = req.body.password.toLowerCase();
     const errors = validationResult(req);
     if(!errors.isEmpty()){
         
@@ -51,8 +51,8 @@ exports.postSignup = (req,res,next)=>{
 }
 
 exports.postLogin = (req,res,next)=>{
-    const email = req.body.email;
-    const password = req.body.password;
+    const email = req.body.email.toLowerCase();
+    const password = req.body.password.toLowerCase();
     const errors = validationResult(req);
     if(!errors.isEmpty()){
         return res.status(422).render("index",{

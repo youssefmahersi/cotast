@@ -243,7 +243,8 @@ exports.editUser = (req,res,next)=>{
     }
 }
 exports.findTeacher = (req,res,next)=>{
-    const teachername = req.body.teachername;
+    const teachername = req.body.teachername.toLowerCase();
+    
     if(teachername === req.user.username){
         return res.redirect("/sprofil");
     }
