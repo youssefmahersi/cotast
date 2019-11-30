@@ -3,6 +3,9 @@ const Cryptr = require('cryptr');
 const cryptr = new Cryptr(`${process.env.CRYPTR_KEY}`);
 exports.getRoom = (req,res,next)=>{
     Room.findOne({_id : req.params.roomId}).then(room=>{
+        if(!room){
+            return res.redirect("/");
+        }
         room.messages.forEach(element => {
             element.message =cryptr.decrypt(element.message)
         });
@@ -17,7 +20,7 @@ exports.getRoom = (req,res,next)=>{
                 status : "teacher",
                 roomId : req.params.roomId,
                 username : req.user.username,
-                envVariable :process.env.DOMAIN_NAME
+                envVariable :process.env.DOMAIN_NAME+":"+process.env.PORT
             })
             
         }else if(check.length >0){
@@ -25,10 +28,10 @@ exports.getRoom = (req,res,next)=>{
                 title : room.roomname,
                 path : room.roomname,
                 rooms : room,
-                status : "student",
+                status : "studnet",
                 roomId : req.params.roomId,
                 username : req.user.username,
-                envVariable :process.env.DOMAIN_NAME
+                envVariable :process.env.DOMAIN_NAME+":"+process.env.PORT
             })
         }else{
             return res.redirect("/");

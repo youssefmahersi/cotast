@@ -12,7 +12,7 @@ const Room = require("./models/room");
 const csrf = require("csurf");
 const MongoDBStore = require('connect-mongodb-session')(session);
 const Mongo_uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0-hax06.mongodb.net/${process.env.MONGO_DATABASE}?retryWrites=true&w=majority`;
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 3000;
 const route = require("./routes/routes");
 const User = require("./models/user");
 const multer = require("multer");
@@ -135,6 +135,7 @@ mongoose.connect(Mongo_uri, {useNewUrlParser: true}).then( result =>{
                   const msg = {
                     username : data.username,
                     message : cryptr.encrypt(data.message),
+                    status : data.status,
                     messagetime : moment().valueOf()
                   }
                   
@@ -142,6 +143,7 @@ mongoose.connect(Mongo_uri, {useNewUrlParser: true}).then( result =>{
                   io.to(data.roomid).emit('new message', {
                     username : msg.username,
                     message : cryptr.decrypt(msg.message),
+                    status : msg.status,
                     messagetime : msg.messagetime
                   })
                   return room.save();

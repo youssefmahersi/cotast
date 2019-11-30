@@ -55,8 +55,7 @@
                 <div class="p-3 mb-2 ">
                     <h1 class="text-center">Chat</h1>
                     <div class="card" id="card">
-                    <div id="messages" class="card-block bg-light"> 
-                    
+                    <div id="messages" class="card-block bg-light">
                         <% if(rooms.messages.length > 0){%>
                           <% for(let room of rooms.messages){%>
                             <div class="p-3 mb-2 bg-light text-dark border border-secondary rounded " style="margin : 3px; padding: 3px;">
@@ -72,7 +71,7 @@
                                 <input type="text" class="form-control" placeholder="Write your message" aria-label="Recipient's username" name="message" aria-describedby="basic-addon2">
                                 <input type="hidden" id="username2" value="<%= username%>">
                                 <div class="input-group-append">
-                                  <button class="btn btn-outline-primary" type="button" onclick="sendMessage(this,'<%= roomId%>','<%= username%>')"><i class="fas fa-paper-plane"></i></button>
+                                  <button class="btn btn-outline-primary" type="button" onclick="sendMessage(this,'<%= roomId%>','<%= username%>','<%= status%>')"><i class="fas fa-paper-plane"></i></button>
                                 </div>
                               </div>
                     

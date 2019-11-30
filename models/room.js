@@ -22,6 +22,10 @@ const roomSchema = new Schema({
             type :String,
             required : true
         },
+        status: {
+            type :String,
+            required : true
+        },
         messagetime : {
             type : String,
             required : true

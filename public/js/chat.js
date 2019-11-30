@@ -11,14 +11,15 @@ socket.on('connect', () => {
     socket.emit('join', {roomId : roomId , un : un.value }); 
   });
 
-const sendMessage = (btn,rommId,username)=>{
+const sendMessage = (btn,rommId,username,status)=>{
   var message = document.querySelector('[name=message]');
   if(message.value !== ""){
-    socket.emit('send message', { message: message.value , roomid : rommId , username : username});
+    socket.emit('send message', { message: message.value , roomid : rommId , username : username ,status : status});
    message.value = "";
   }
   
 }
+
 socket.on('new message', (msg) => {
   appendMessage(msg);
 });

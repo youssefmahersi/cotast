@@ -3,6 +3,7 @@
 <body>
         <%- include("../includes/body.ejs"); %>
         <%- include("../includes/navigation3.ejs"); %>
+        <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap" rel="stylesheet"> 
         <div class="container">
                 <div class="row ">
                     <br>
@@ -19,14 +20,14 @@
                         </ul>
                         <div class="tab-content py-4">
                             <div class="tab-pane <%= editMode === 'true' ? '' : 'active'%>" id="profile">
-                                <h1><i class="fas fa-user-circle"></i><h5 class="mb-4">
-                                        Profil</h5></h1>
+                                <h1 ><i class="fas fa-user-circle"></i><h4 class="mb-4">
+                                        Profil</h4></h1>
                                 
                                 <div class="row">
                                     <div class="col-md-7">
-                                        <h5 class="text-primary"> <%= username%></h5>
-                                        <h5 class="text-secondary"> <%= email%></h5>
-                                        <h6 class="text-secondary"><%= school%></h6>
+                                        <h5 class="text-primary" style="font-family: 'Source Sans Pro', sans-serif;"> <%= username%></h5>
+                                        <h5 class="text-secondary" style="font-family: 'Source Sans Pro', sans-serif;"> <%= email%></h5>
+                                        <h6 class="text-secondary" style="font-family: 'Source Sans Pro', sans-serif; "><%= school%></h6>
                                         
                                     </div>
                                     <div class="col-md-4">
@@ -77,9 +78,10 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="col-md-6 offset-md-3 col-sm-12">
-                            <h1 class="text-muted text-center">
+                   
+                    <div class="col-md-6 offset-md-3 col-sm-12 ">
+                        <br>
+                            <h1 class="text-muted text-center" style="font-family: 'Source Sans Pro', sans-serif; font-size: 30px;">
                                 Organiser vos fichiers</h1>
                             <br>
                             <div id="formfolder">
