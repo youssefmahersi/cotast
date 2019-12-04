@@ -4,6 +4,8 @@
         <script src="/js/moment/moment.js"></script>
         <%- include("../includes/momentf.ejs"); %>
         <%- include("../includes/navigation.ejs"); %>
+        <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap" rel="stylesheet"> 
+
         <div class="container">
                 <div class="row ">
                     
@@ -24,9 +26,9 @@
                                 
                                 <div class="row">
                                     <div class="col-md-7">
-                                        <h5 class="text-primary"><%= username%></h5>
-                                        <h5 class="text-secondary"><%= email%></h5>
-                                        <h6 class="text-secondary"><%= school%></h6>
+                                        <h5 class="text-primary" style="font-family: 'Source Sans Pro', sans-serif;"><%= username%></h5>
+                                        <h5 class="text-secondary" style="font-family: 'Source Sans Pro', sans-serif;"><%= email%></h5>
+                                        <h6 class="text-secondary" style="font-family: 'Source Sans Pro', sans-serif;"><%= school%></h6>
                                         
                                     </div>
                                     <div class="col-md-4">
@@ -58,7 +60,7 @@
                                             <div class="col-lg-9">
                                                 <select id="user_time_zone" class="form-control" size="0" name="school">
                                                         <option value="<%= school%>"><%= school%></option>
-                                                    <option value="Khaznadar">Khaznadar</option>
+                                                    <option value="Bardo">Bardo</option>
                                                     <option value="Rue de russie">Rue de russie</option>
                                                 </select>
                                             </div>
@@ -82,7 +84,7 @@
                     </div>
                     
                     <div class="col-md-6 offset-md-3 col-sm-12 border-top">
-                            <h2 class="text-center text-dark">Mes publications</h2>
+                            <h2 class="text-center text-dark" style="font-family: 'Source Sans Pro', sans-serif;">Mes publications</h2>
                             <div class="text-center">
                             
                                 </div>

@@ -6,6 +6,8 @@ const messageContainer = document.getElementById("messages");
 const statusContainer = document.getElementById("status");
 const un = document.getElementById("username2");
 
+const input = document.getElementById("msgf");
+const status = document.getElementById("status");
 const roomId  = window.location.pathname.substr(6,window.location.pathname.length);
 socket.on('connect', () => {
     socket.emit('join', {roomId : roomId , un : un.value }); 
@@ -19,6 +21,19 @@ const sendMessage = (btn,rommId,username,status)=>{
   }
   
 }
+input.addEventListener("keyup", function(event) {
+  // Number 13 is the "Enter" key on the keyboard
+  if (event.keyCode === 13) {
+    // Cancel the default action, if needed
+    event.preventDefault();
+    // Trigger the button element with a click
+    var message = document.querySelector('[name=message]');
+    if(message.value !== ""){
+      socket.emit('send message', { message: message.value , roomid : roomId , username :un.value ,status : status.value});
+     message.value = "";
+    }
+  }
+}); 
 
 socket.on('new message', (msg) => {
   appendMessage(msg);
