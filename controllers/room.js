@@ -14,7 +14,7 @@ exports.getRoom = (req,res,next)=>{
         
         if(room.creator._id.toString() === req.user._id.toString()){
             return res.render("room",{
-                title : room.roomname,
+                title :"Cotast",
                 path : room.roomname,
                 rooms : room,
                 status : "teacher",

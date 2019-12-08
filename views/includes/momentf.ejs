@@ -1,7 +1,13 @@
 <script>
         function renderDate(value){
             
-            var formattedTime = moment(value).format('MMMM Do YYYY, h:mm');
+            var formattedTime = moment(value).locale('fr').format('MMMM Do YYYY, h:mm');
+            
+        return formattedTime;
+        }
+        function renderDate2(value){
+            
+            var formattedTime = moment(value).locale('fr').fromNow();
             
         return formattedTime;
         }

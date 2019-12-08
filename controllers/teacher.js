@@ -18,7 +18,7 @@ var transporter = nodemailer.createTransport(sendgridTransport({
       api_key : process.env.API_KEY
   }
 
-}))
+}));
 let postsnumber;
 exports.getTHome = (req,res,next)=>{
     let message = req.flash('info');
@@ -29,25 +29,19 @@ exports.getTHome = (req,res,next)=>{
   }
     Post.find({"creator.school": req.user.school}).sort({ 'createdAt' : -1 }).then(posts =>{
       Follower.findOne({followid : req.user._id}).then(followers=>{
-        if(!followers){
+        if(followers){
+
+          var followers2 =  followers.followers.filter(follower => follower.subscribe === "abonne");
+        }
+        
           return  res.render("teacher/teacher",
           {
               title : "Home",
               path : "home",
               message : message,
-              posts : posts,
-              followers : []
-          });
-        }
-        
-        res.render("teacher/teacher",
-    {
-        title : "Home",
-        path : "home",
-        message : message,
-        posts : posts,
-        followers : followers.followers
-    }); 
+              posts : posts ? posts : [],
+              followers : followers2 ? followers2  : []
+          }); 
   }) 
     }).catch(err =>{
         const error = new Error(err);
@@ -62,11 +56,13 @@ exports.getTHome = (req,res,next)=>{
 exports.getChat = (req,res,next)=>{
   Follower.findOne({"followid": req.user._id}).then(followers=>{
     Room.find({"creator._id": req.user._id}).then(rooms =>{
-      
+      if(followers){
+       var followers2 =  followers.followers.filter(follower => follower.subscribe === "abonne");
+      }
       return res.render("teacher/tchat",{
         title : "Chat",
         path : "chat",
-        followers :followers ? followers.followers : [],
+        followers :followers2 ? followers2  : [],
         rooms : rooms ? rooms : []
     })
   })
@@ -95,6 +91,7 @@ exports.getProfil = (req,res,next)=>{
         postsnumber = countDocuments;
         return Post.find({"creator._id": req.user._id}).sort({ 'createdAt' : -1 }).then(posts=>{
           Follower.findOne({followid : req.user._id}).then(followers=>{
+
             if(!followers){
               return res.render("teacher/tprofil",
               {
@@ -108,11 +105,14 @@ exports.getProfil = (req,res,next)=>{
                   message : message,
                   editMode : editMode,
                   followers :[],
+                  enattente : [],
                   numfollow : "0"
           
                   
               }); 
             }
+            var abonnefollowers = followers.followers.filter(follower => follower.subscribe == "abonne");
+            var enattentefollowers = followers.followers.filter(follower => follower.subscribe == "enAttente");
             res.render("teacher/tprofil",
     {
         title : "Profil",
@@ -124,8 +124,9 @@ exports.getProfil = (req,res,next)=>{
         school : req.user.school,
         message : message,
         editMode : editMode,
-        followers :followers.followers,
-        numfollow : followers.followers.length
+        followers :abonnefollowers,
+        enattente : enattentefollowers,
+        numfollow : abonnefollowers.length
 
         
     });  
@@ -177,14 +178,14 @@ exports.postUplaod = (req,res,next)=>{
     });
     post.save().then(result =>{
       res.redirect("/thome");
-      return Follower.findOne({followid : req.user._id}).then(followers =>{
+      return Follower.findOne({followid : req.user._id ,'followers.subscribe': 'abonne'}).then(followers =>{
         if(followers){
           if(followers.followers.length > 0){
             for(let i= 0;i < followers.followers.length; i++){
               transporter.sendMail({
                 to: followers.followers[i].email,
                 from : "cotast",
-                subject :"New post",
+                subject :"Nouvel Publication",
                 html :`<h1 style="text-align:center; font-family:courier,arial,helvetica;">Votre enseignant ${req.user.username} a ajouté une publication </h1><br>
                 <div style="display: inline-block; text-align:center;"><a href="${process.env.DOMAIN_NAME}/profil/${req.user._id}" style="background-color: #f44336;
                 color: white;
@@ -199,8 +200,6 @@ exports.postUplaod = (req,res,next)=>{
               },(err,res)=>{
                 if(err){
                   console.log(err);
-                }else{
-                  console.log(`email sent to ${followers.followers[i].email}`);
                 }
               });
              
@@ -336,3 +335,69 @@ exports.logout =(req,res,next)=>{
   });
 }
 
+exports.acceptStudent =  (req,res,next)=>{
+  const followerId = req.body.id;
+  
+  Follower.findOne({followid : req.user._id}).then(data=>{
+    
+    if(data){
+      var find = data.followers.filter(follower => follower._id.toString() === followerId.toString());
+      if(find.length > 0 ){
+        find[0].subscribe  = "abonne"
+        return data.save().then(result=>{
+           res.status(200).json({message : "success"});
+           
+            return transporter.sendMail({
+                to: find[0].email,
+                from : "cotast",
+                subject :"Demande accepter",
+                html :`<h1 style="text-align:center; font-family:courier,arial,helvetica;">Votre Enseignant ${req.user.username} a accepté votre demande </h1><br>
+                <div style="display: inline-block; text-align:center;"><a href="${process.env.DOMAIN_NAME}/shome" style="background-color: #f44336;
+                color: white;
+                
+                margin :auto;
+                padding: 14px 25px;
+                text-align: center;
+                text-decoration: none;
+                border-radius: 4px;
+                display: inline-block;">Voir profil</a></div>
+                `
+              },(err,res)=>{
+                if(err){
+                  console.log(err);
+                }
+              });
+       
+          
+        });
+        
+      }
+    }
+  }).catch(err =>{
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  });
+}
+
+exports.rejectStudent =  (req,res,next)=>{
+  const followerId = req.body.id;
+
+  Follower.findOne({followid : req.user._id}).then(data=>{
+    
+    if(data){
+      var find = data.followers.filter(follower => follower._id.toString() != followerId.toString());
+      
+        data.followers = find;
+        return data.save().then(result=>{
+          return res.status(200).json({message : "success"});
+        });
+        
+      
+    }
+  }).catch(err =>{
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  });
+}

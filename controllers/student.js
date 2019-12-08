@@ -3,7 +3,18 @@ const { validationResult } = require('express-validator/check');
 const Folder = require("../models/folder");
 const User = require("../models/user"); 
 const Follower = require("../models/follower");
+const moment  = require('moment');
 const Room = require("../models/room");
+const nodemailer = require('nodemailer');
+const sendgridTransport = require("nodemailer-sendgrid-transport");
+var transporter = nodemailer.createTransport(sendgridTransport({
+    
+    service: 'gmail',
+    auth: {
+        api_key : process.env.API_KEY
+    }
+  
+  }));
 exports.getSHome = (req,res,next)=>{
     
     let message = req.flash('shome');
@@ -12,21 +23,35 @@ exports.getSHome = (req,res,next)=>{
         } else {
             message = null;
         }
+        Follower.find({'followers.followerid' : req.user._id , 'followers.subscribe' : 'abonne'}).then(fol=>{
+            
     Post.find({"creator.school":req.user.school}).sort({ 'createdAt' : -1 }).then(posts=>{
         Folder.find({creatorId : req.user._id}).then(folders=>{
+            var post2 = [];
+            if(fol){
+                posts.forEach(post => {
+                    for(let i = 0 ; i< fol.length ; i++){
+                        if(post.creator._id.toString() === fol[i].followid.toString()){
+                            post2.push(post);
+                        } 
+                    }
+                });
+            }
+            
             
                 res.render("student/shome",
                 {
                     title : "Home",
                     path : "home",
-                    posts : posts,
+                    posts : post2,
                     folders : folders,
                     message : message
                     
                 });
         })
     
-    }).catch(err=>{
+    }) 
+}).catch(err=>{
         const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
@@ -67,19 +92,59 @@ exports.getteacherProfil = (req,res,next)=>{
             
             Post.find({"creator._id" : teacher._id}).sort({ 'createdAt' : -1 }).then(posts =>{
                 Folder.find({creatorId : req.user._id}).then(folders =>{
-                    Follower.findOne({followid : teacherId}).then(followers=>{
+                    Follower.findOne({followid : teacher._id}).then(followers=>{
+                        
+                        if(followers){
+                            var subscriber = followers.followers.filter(user => {
+                                return user.followerid.toString() === req.user._id.toString()&& (user.subscribe === "abonne");
+                            });
+                            var subscriber2 = followers.followers.filter(user => {
+                                return user.followerid.toString() === req.user._id.toString()&& (user.subscribe === "enAttente");
+                            });
+                            var status = '';
+                            var butonTag = "";
+                            if(subscriber.length > 0){
+                                status = 'Abonné';
+                                butonTag = 'btn btn-secondary text-light disabled'
+                            }
+                            else if(subscriber2.length === 0){
+                                status = 'Suivre';
+                                butonTag = 'btn btn-danger text-dark ';
+                            }
+                            else if(subscriber2.length > 0){
+                                status = 'En Attente';
+                                butonTag = 'btn btn-secondary text-light disabled'
+                            }
+                            return res.status(200).render("student/ssearch",{
+                        
+                                title : teacher.username,
+                                path: "ssearch",
+                                teacher : teacher,
+                                numposts : numDocuments,
+                                posts :  subscriber.length === 0 ? [] : posts,
+                                folders : folders,
+                                followers : followers.followers.length,
+                                subscribe : status,
+                                butonTag: butonTag
+                            
+                            })
+                        }
                         return res.status(200).render("student/ssearch",{
+                        
                             title : teacher.username,
                             path: "ssearch",
                             teacher : teacher,
                             numposts : numDocuments,
-                            posts : posts,
+                            posts : [],
                             folders : folders,
-                            followers : followers.followers.length 
+                            followers : 0,
+                            subscribe : "Suivre",
+                            butonTag : 'btn btn-danger text-dark '
                         
                         })
 
-                    })
+                   
+                 })
                   
                 })
                 
@@ -255,7 +320,6 @@ exports.findTeacher = (req,res,next)=>{
             return res.redirect("/shome");
 
         }
-        
        
         Post.find({"creator._id" : teacher._id}).countDocuments().then(numDocuments=>{
            
@@ -263,16 +327,39 @@ exports.findTeacher = (req,res,next)=>{
              Post.find({"creator._id" : teacher._id}).sort({ 'createdAt' : -1 }).then(posts =>{
                  Folder.find({creatorId : req.user._id}).then(folders =>{
                     Follower.findOne({followid : teacher._id}).then(followers=>{
+                        
                         if(followers){
+                            var subscriber = followers.followers.filter(user => {
+                                return user.followerid.toString() === req.user._id.toString()&& (user.subscribe === "abonne");
+                            });
+                            var subscriber2 = followers.followers.filter(user => {
+                                return user.followerid.toString() === req.user._id.toString()&& (user.subscribe === "enAttente");
+                            });
+                            var status = '';
+                            var butonTag = "";
+                            if(subscriber.length > 0){
+                                status = 'Abonné';
+                                butonTag = 'btn btn-secondary text-light disabled'
+                            }
+                            else if(subscriber2.length === 0){
+                                status = 'Suivre';
+                                butonTag = 'btn btn-danger text-dark ';
+                            }
+                            else if(subscriber2.length > 0){
+                                status = 'En Attente';
+                                butonTag = 'btn btn-secondary text-light disabled'
+                            }
                             return res.status(200).render("student/ssearch",{
                         
                                 title : teacher.username,
                                 path: "ssearch",
                                 teacher : teacher,
                                 numposts : numDocuments,
-                                posts : posts,
+                                posts :  subscriber.length === 0 ? [] : posts,
                                 folders : folders,
-                                followers : followers.followers.length
+                                followers : followers.followers.length,
+                                subscribe : status,
+                                butonTag: butonTag
                             
                             })
                         }
@@ -282,9 +369,11 @@ exports.findTeacher = (req,res,next)=>{
                             path: "ssearch",
                             teacher : teacher,
                             numposts : numDocuments,
-                            posts : posts,
+                            posts : [],
                             folders : folders,
-                            followers : 0
+                            followers : 0,
+                            subscribe : "Suivre",
+                            butonTag : 'btn btn-danger text-dark '
                         
                         })
 
@@ -311,22 +400,51 @@ exports.followTeacher = (req,res,next)=>{
     .then(follower =>{
         if(follower){
             
-            var check = follower.followers.find(izd =>  izd.followerid.toString() === req.user._id.toString());
-            if(check){
+            var check = follower.followers.filter(izd =>  izd.followerid.toString() === req.user._id.toString() &&(izd.subscribe === "abonne"));
+            var check2 = follower.followers.filter(izd =>  izd.followerid.toString() === req.user._id.toString() &&(izd.subscribe === "enAttente"));
+            
+            if(check.length != 0){
                 
                 return res.json({message : "vous etes un abonné" });
             }
-            const user = {
-                username : req.user.username,
-                followerid : req.user._id,
-                school : req.user.school,
-                email : req.user.email
+            
+            else if(check2.length == 0){
+                const user = {
+                    username : req.user.username,
+                    followerid : req.user._id,
+                    school : req.user.school,
+                    email : req.user.email,
+                    subscribe : "enAttente",
+                    time : moment().valueOf()
+                }
+                follower.followers.push(user);
+                return follower.save().then(result =>{
+                    return User.findOne({_id: teacherId}).then(teach=>{
+                        transporter.sendMail({
+                            to: teach.email,
+                            from : "cotast",
+                            subject :"nouvelle demande de suivre",
+                            html :`<h1 style="text-align:center; font-family:courier,arial,helvetica;">Votre eléve ${req.user.username} veut te suivre </h1><br>
+                            <div style="display: inline-block; text-align:center;"><a href="${process.env.DOMAIN_NAME}/tprofil" style="background-color: #f44336;
+                            color: white;
+                            
+                            margin :auto;
+                            padding: 14px 25px;
+                            text-align: center;
+                            text-decoration: none;
+                            border-radius: 4px;
+                            display: inline-block;">Voir profil</a></div>
+                            `
+                          },(err,res)=>{
+                            if(err){
+                              console.log(err);
+                            }
+                          });
+                        res.json({message : "votre demande a été envoyée"});
+                    })
+                    
+                });
             }
-            follower.followers.push(user);
-            return follower.save().then(result =>{
-                
-                res.json({message : "vous etes un abonné"});
-            });
         }else{
             const newfollower = new Follower({
                 followid : teacherId,
@@ -334,12 +452,36 @@ exports.followTeacher = (req,res,next)=>{
                     username : req.user.username,
                     followerid : req.user._id,
                     school : req.user.school,
-                    email : req.user.email
+                    email : req.user.email,
+                    subscribe : "enAttente",
+                    time : moment().valueOf()
                 }]
             });
             return newfollower.save().then(result =>{
                 
-                res.json({message : "vous avez abonné"});
+                 return User.findOne({_id: teacherId}).then(teach=>{
+                    transporter.sendMail({
+                        to: teach.email,
+                        from : "cotast",
+                        subject :"nouvelle demande de suivre",
+                        html :`<h1 style="text-align:center; font-family:courier,arial,helvetica;">Votre eléve ${req.user.username} veut te suivre </h1><br>
+                        <div style="display: inline-block; text-align:center;"><a href="${process.env.DOMAIN_NAME}/tprofil" style="background-color: #f44336;
+                        color: white;
+                        
+                        margin :auto;
+                        padding: 14px 25px;
+                        text-align: center;
+                        text-decoration: none;
+                        border-radius: 4px;
+                        display: inline-block;">Voir profil</a></div>
+                        `
+                      },(err,res)=>{
+                        if(err){
+                          console.log(err);
+                        }
+                      });
+                    res.json({message : "votre demande a été envoyée"});
+                })
             });
         }
     })

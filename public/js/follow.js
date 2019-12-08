@@ -1,4 +1,9 @@
-const follow = (btn,teacherid,csrf) =>{
+var button = document.getElementById('btnbtn');
+
+const follow = (btn,teacherid,csrf,subscriber) =>{
+  if(subscriber == "En Attente" || subscriber == "Abonné"){
+    return false;
+  }
     fetch('/follow-teacher', {
         method: 'POST',
         headers : {
@@ -16,7 +21,8 @@ const follow = (btn,teacherid,csrf) =>{
         .then(data => {
          
           Swal.fire(data.message)
-         
+          button.className = "btn btn-secondary text-dark disabled"
+         button.innerHTML = "<i class='fas fa-spinner'></i> En attente";
   
         })
         .catch(err => {

@@ -10,7 +10,7 @@ const followerSchema = new schema({
         {
             username : {
                 type : String,
-                required :true,
+                required :true
             },
             followerid : {
                 type : mongoose.Types.ObjectId,
@@ -22,6 +22,14 @@ const followerSchema = new schema({
                 required :true
             },
             email :{
+                type : String,
+                required :true
+            },
+            subscribe :{
+                type : String,
+                required :true
+            },
+            time :{
                 type : String,
                 required :true
             }

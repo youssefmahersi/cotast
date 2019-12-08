@@ -19,6 +19,9 @@
                             <li class="nav-item">
                                 <a href="" data-target="#edit" data-toggle="tab" class="nav-link <%= editMode === 'true' ? 'active' : '' %>">Modifier</a>
                             </li>
+                            <li class="nav-item">
+                                <a href="" data-target="#request" data-toggle="tab" class="nav-link">demande d'élève</a>
+                            </li>
                         </ul>
                         <div class="tab-content py-4">
                             <div class="tab-pane <%= editMode === 'true' ? '' : 'active' %>" id="profile">
@@ -44,7 +47,35 @@
                                 </div>
                                 <!--/row-->
                             </div>
-                            
+                            <div class="tab-pane" id="request">
+                                    <% if (enattente.length > 0) { %>
+                                        <% for (let follow of enattente){%>
+                                <div class="list-group" id="hhh<%= follow._id%>">
+                                    
+                                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start ">
+                                      <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1"><i class="fas fa-user-circle"></i> <%= follow.username%></h5>
+                                        <small><script>document.write( renderDate2(Number('<%= follow.time%>')));</script></small>
+                                      </div>
+                                      <small><%= follow.school%></small>
+                                    </a>
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        <button class="btn btn-success" type="button"  onclick="accept(this,'<%= follow._id%>','<%= csrfToken %>')"><i class="fas fa-user-check"></i></button>
+                                        <button class="btn btn-danger" type="button"  onclick="reject(this,'<%= follow._id%>','<%= csrfToken %>')"><i class="fas fa-user-times"></i></button>
+                                
+                                      </div>
+                                   
+                                  </div>
+                                  <br>
+                                  <%}%>
+                                  <%}else{%>
+                                    <div class="text-danger text-center" role="alert">
+                                        pas de Demandes
+                                          </div>
+                                 
+                                  <%}%>
+
+                            </div>
                             <div class="tab-pane <%= editMode === 'true' ? 'active' : '' %>" id="edit">
                                 <form role="form" action="/edit-user" method="POST">
                                     <div class="form-group row">
@@ -84,6 +115,7 @@
                     </div>
                     
                     <div class="col-md-6 offset-md-3 col-sm-12 border-top">
+                        <br>
                             <h2 class="text-center text-dark" style="font-family: 'Source Sans Pro', sans-serif;">Mes publications</h2>
                             <div class="text-center">
                             
@@ -153,8 +185,11 @@
             <%- include("../includes/footer.ejs");%>
               
 </body>
-<script src="/js/delete.js"></script>
+
 <%- include("../includes/script.ejs");%>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+<script src="/js/delete.js"></script>
+<script src="/js/acceptStudent.js"></script>
+<script src="/js/rejectStudent.js"></script>
 <script src="/js/logout.js"></script>
 </html>

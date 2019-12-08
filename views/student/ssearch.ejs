@@ -17,7 +17,7 @@
                             <h5 class="text-secondary"> <%= teacher.email%></h5>
                             <h6 class="text-secondary"><%= teacher.school%></h6>
                             
-                            <button type="button" class="btn btn-danger text-dark" style="margin: 10px;" onclick="follow(this,'<%= teacher._id%>','<%= csrfToken %>')"><i class="fas fa-plus-circle" ></i> suivre</button>
+                            <button type="button" class=" <%= butonTag%>" style="margin: 10px;" id="btnbtn" onclick="follow(this,'<%= teacher._id%>','<%= csrfToken %>','<%= subscribe%>')"><i class="<%= subscribe === 'En Attente' ? 'fas fa-spinner' : 'fas fa-plus-circle'%>" ></i> <%= subscribe%></button>
                           
                         </div>
                         <div class="col-md-4">
@@ -108,7 +108,8 @@
                 <%}}%>
                 <%}else{%>
                   <div class="alert alert-dark text-center" role="alert">
-                      Pas de publications
+                    <%= subscribe === "En Attente" || "Suivre" ? "Suivez ce enseignant pour voir ses publications" : " Pas de publications" %>
+                     
                     </div>
                   <%}%>
                                           

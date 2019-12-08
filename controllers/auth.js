@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const { validationResult } = require('express-validator/check'); 
 exports.getIndex = (req,res,next)=>{
     res.render("index",{
-        title : "Home",
+        title : "Cotast",
         path : "Home",
         oldInputs : {
             email : ""
@@ -56,7 +56,7 @@ exports.postLogin = (req,res,next)=>{
     const errors = validationResult(req);
     if(!errors.isEmpty()){
         return res.status(422).render("index",{
-            title : "Home",
+            title : "Cotast",
             path : "home",
             oldInputs :{
                 email : email
@@ -69,7 +69,7 @@ exports.postLogin = (req,res,next)=>{
     .then(user =>{
         if(!user){
             return res.status(422).render("index",{
-                title : "Home",
+                title : "Cotast",
                 path : "home",
                 oldInputs :{
                     email : email
@@ -89,7 +89,7 @@ exports.postLogin = (req,res,next)=>{
                 });
             }
             return res.status(422).render("index",{
-                title : "Home",
+                title : "Cotast",
                 oldInputs :{
                     email : email
                 },

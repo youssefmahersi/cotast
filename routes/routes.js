@@ -95,7 +95,8 @@ router.post("/create-room",auths,auth.authStudent,[body("roomName","nom de group
 }).trim(),body("roomPassword","mot de passe de groupe invalide").not().isEmpty().isLength({min : 4 }).withMessage("mot de passe de la chambre doit être au moins de 4 caractères")],tController.createRoom)
 router.post("/logoutt",auths,auth.authStudent,tController.logout);
 
-
+router.post("/acceptStudent",auths,auth.authStudent,tController.acceptStudent);
+router.post("/rejectStudent",auths,auth.authStudent,tController.rejectStudent);
 /////student
 router.get("/shome",auths,auth.authTeacher,sController.getSHome);
 router.get("/schat",auths,auth.authTeacher,sController.getChat);
