@@ -20,7 +20,7 @@ exports.getRoom = (req,res,next)=>{
                 status : "teacher",
                 roomId : req.params.roomId,
                 username : req.user.username,
-                envVariable :process.env.DOMAIN_NAME+":"+process.env.PORT
+                envVariable :process.env.DOMAIN_NAME
             })
             
         }else if(check.length >0){
@@ -31,7 +31,7 @@ exports.getRoom = (req,res,next)=>{
                 status : "studnet",
                 roomId : req.params.roomId,
                 username : req.user.username,
-                envVariable :process.env.DOMAIN_NAME+":"+process.env.PORT
+                envVariable :process.env.DOMAIN_NAME
             })
         }else{
             return res.redirect("/");
