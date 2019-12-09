@@ -3,7 +3,7 @@ console.log(envVariable)
 var socket = io.connect(envVariable);
 
 const messageContainer = document.getElementById("messages");
-const statusContainer = document.getElementById("status");
+const statusContainer = document.getElementById("status2");
 const un = document.getElementById("username2");
 
 const input = document.getElementById("msgf");
@@ -72,16 +72,16 @@ function appendMessage2(m) {
   messageElement.style = "margin : 3px; padding: 3px;"
   messageElement.innerText= `${m} a connecté`
   statusContainer.append(messageElement)
-  statusContainer.scrollTop = messageContainer.scrollHeight;
+  statusContainer.scrollTop = statusContainer.scrollHeight;
 }
 function appendMessage3(m) {
   
   const messageElement = document.createElement('p')
   
-  messageElement.className = "text-center text-danger"
-  messageElement.style = "margin : 3px; padding: 3px;"
-  messageElement.innerText= `${m} a déconnecté`
-  statusContainer.append(messageElement)
+  messageElement.className = "text-center text-danger";
+  messageElement.style = "margin : 3px; padding: 3px;";
+  messageElement.innerText= `${m} a déconnecté`;
+  statusContainer.append(messageElement);
   statusContainer.scrollTop = statusContainer.scrollHeight;
 }
 function linkify(text) {
