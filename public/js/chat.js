@@ -36,10 +36,12 @@ input.addEventListener("keyup", function(event) {
 }); 
 
 socket.on('new message', (msg) => {
+  
   appendMessage(msg);
 });
 
 socket.on("user-connected",data =>{
+  console.log("hehehhehe");
   appendMessage2(data);
   
 })
