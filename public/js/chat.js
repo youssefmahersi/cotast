@@ -82,7 +82,7 @@ function appendMessage3(m) {
   messageElement.style = "margin : 3px; padding: 3px;"
   messageElement.innerText= `${m} a déconnecté`
   statusContainer.append(messageElement)
-  statusContainer.scrollTop = messageContainer.scrollHeight;
+  statusContainer.scrollTop = statusContainer.scrollHeight;
 }
 function linkify(text) {
   var urlRegex =/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
