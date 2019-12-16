@@ -6,6 +6,7 @@ const Follower = require("../models/follower");
 const moment  = require('moment');
 const Room = require("../models/room");
 const nodemailer = require('nodemailer');
+const bcrypt = require("bcrypt");
 const sendgridTransport = require("nodemailer-sendgrid-transport");
 var transporter = nodemailer.createTransport(sendgridTransport({
     
@@ -500,18 +501,20 @@ exports.logout =(req,res,next)=>{
 
 exports.joinromm = (req,res,next)=>{
     const roomname = req.body.roomname;
-    const password = req.body.rommpassword;
+    const roompassword = req.body.roompassword;
     const errors = validationResult(req);
     if(!errors.isEmpty()){
         return res.status(200).json({message : errors.array()[0].msg});
     }
-    Room.findOne({roomname : roomname ,rommpassword: password}).then(room =>{
+    Room.findOne({roomname : roomname}).then(room =>{
         
         if(!room){
             
-            return res.status(200).json({message : "Pas ge groupes"});
+            return res.status(422).json({message : "Pas ge groupes"});
         }
-        const check = room.usersId.filter(userId => userId.toString() === req.user._id.toString());
+        bcrypt.compare(roompassword ,room.roompassword).then(doMatch =>{
+            if(doMatch){
+                const check = room.usersId.filter(userId => userId.toString() === req.user._id.toString());
         
             if(check.length > 0){
                 return res.status(200).json({message : "vous etes un abonné!"});
@@ -520,6 +523,11 @@ exports.joinromm = (req,res,next)=>{
             return room.save().then(result =>{
                 res.status(200).json({message : "Success!!"});
             });
+            }else{
+                return res.status(422).json({message : "invalide mot de passe ou nom"});
+            }
+        })
+        
         
     })
     .catch(err =>{

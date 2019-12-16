@@ -312,14 +312,17 @@ exports.createRoom = (req,res,next)=>{
   if(!errors.isEmpty()){
     return res.json({message : errors.array()[0].msg});
   }
-  const room = new Room({
-    roomname : roomname,
-    roompassword : roompassword,
-    usersId : [],
-    messages : [],
-    creator : req.user
-  });
-  room.save().then(result =>{
+  bcrypt.hash(roompassword,12).then(hashedPassword =>{
+   
+    const room = new Room({
+      roomname : roomname,
+      roompassword : hashedPassword,
+      usersId : [],
+      messages : [],
+      creator : req.user
+    });
+    room.save()
+  }).then(result =>{
     return res.status(200).json({message : "Room created succesfuly"});
   }).catch(err =>{
     const error = new Error(err);
