@@ -24,8 +24,7 @@ exports.getSHome = (req,res,next)=>{
         } else {
             message = null;
         }
-        Follower.find({'followers.followerid' : req.user._id , 'followers.subscribe' : 'abonne'}).then(fol=>{
-            
+        Follower.find({'followers.followerid' : req.user._id , 'followers.subscribe' : 'abonne'}).then(fol=>{     
     Post.find({"creator.school":req.user.school}).sort({ 'createdAt' : -1 }).then(posts=>{
         Folder.find({creatorId : req.user._id}).then(folders=>{
             var post2 = [];
@@ -46,7 +45,8 @@ exports.getSHome = (req,res,next)=>{
                     path : "home",
                     posts : post2,
                     folders : folders,
-                    message : message
+                    message : message,
+                    myTeachers : fol ||[]
                     
                 });
         })
@@ -64,7 +64,7 @@ exports.getChat = (req,res,next)=>{
         let rooma = [];
         for(let i =0;i<rooms.length; i++){
            
-            var check = rooms[i].usersId.filter(userId=> userId.toString() === req.user._id.toString());
+            var check = rooms[i].users.filter(user=> user._id.toString() === req.user._id.toString());
             
             if(check.length > 0){
                 rooma.push({roomname:rooms[i].roomname,
@@ -396,7 +396,7 @@ exports.findTeacher = (req,res,next)=>{
 
 exports.followTeacher = (req,res,next)=>{
     const teacherId = req.body.teacherid;
-    
+    const teachername = req.body.teachername;
     Follower.findOne({followid : teacherId})
     .then(follower =>{
         if(follower){
@@ -449,6 +449,7 @@ exports.followTeacher = (req,res,next)=>{
         }else{
             const newfollower = new Follower({
                 followid : teacherId,
+                followusername : teachername,
                 followers :[{
                     username : req.user.username,
                     followerid : req.user._id,
@@ -514,12 +515,12 @@ exports.joinromm = (req,res,next)=>{
         }
         bcrypt.compare(roompassword ,room.roompassword).then(doMatch =>{
             if(doMatch){
-                const check = room.usersId.filter(userId => userId.toString() === req.user._id.toString());
+                const check = room.users.filter(user => user._id.toString() === req.user._id.toString());
         
             if(check.length > 0){
                 return res.status(200).json({message : "vous etes un abonné!"});
             }
-            room.usersId.push(req.user._id);
+            room.users.push(req.user);
             return room.save().then(result =>{
                 res.status(200).json({message : "Success!!"});
             });

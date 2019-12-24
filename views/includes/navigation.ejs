@@ -13,24 +13,7 @@
         <li class="<%= path === 'profil' ? 'nav-item active' : 'nav-item' %>">
           <a class="nav-link " href="/tprofil"><i class="fas fa-user-circle"></i> Profil</a>
         </li>
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-users"></i> Abonnés
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <% if (followers.length > 0) { %>
-                  <% for (let follower of followers){%>
-                    
-                      <button class="dropdown-item" type="button" ><%= follower.username %></button>
-
-                    <%}%>
-                    <%}else{%>
-                      <div class="text-danger text-center">Pas d abonnés</div>
-                      <%}%>
-             
-              
-            </div>
-          </li>
+        
           <% if(path === "chat"){ %>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

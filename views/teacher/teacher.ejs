@@ -19,11 +19,23 @@
                                                 <label for="ControlTextarea">commentaire</label>
                                         <textarea class="form-control bg-transparent border border-0" id="ControlTextarea" name="description" rows="2" placeholder="Ecrivez votre commentaire"></textarea>
                                       </div>
+                                      <% if(rooms.length >0){%>
+                                      <div class="form-group">
+                                        <select class="form-control" id="InputSelect" name = "groupename">
+                                          <option value="tous">Choisissez un groupe</option>
+                                                <%for(let room of rooms){%>
+                                                  <option value="<%=room.roomname%>"><%=room.roomname%></option>
+                                                  <%}%>
+                                                  
+                                              </select>
+                                            </div>
+                                            <%}%>
                                       
                                           <div class="form-group" >
                                                        <input type="hidden" name="_csrf" value="<%= csrfToken%>"> 
                                                   <input type="file" name="file" class="form-control-file"  id="inputFile">
                                                 </div>
+                                               
                                                         <button type="submit" class="btn btn-outline-success"><i class="fas fa-upload"></i></button>
                                                 
                                               

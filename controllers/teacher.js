@@ -33,15 +33,19 @@ exports.getTHome = (req,res,next)=>{
 
           var followers2 =  followers.followers.filter(follower => follower.subscribe === "abonne");
         }
-        
+        Room.find({"creator._id": req.user._id}).then(rooms=>{
           return  res.render("teacher/teacher",
           {
               title : "Home",
               path : "home",
               message : message,
               posts : posts ? posts : [],
-              followers : followers2 ? followers2  : []
+              followers : followers2 ? followers2  : [],
+              rooms : rooms
           }); 
+
+        })
+          
   }) 
     }).catch(err =>{
         const error = new Error(err);
@@ -143,8 +147,8 @@ exports.getProfil = (req,res,next)=>{
 exports.postUplaod = (req,res,next)=>{
     const file = req.file;
     const comment = req.body.description;
+    const groupename = req.body.groupename;
     const errors = validationResult(req);
-
     if(!errors.isEmpty()){
         req.flash('info', errors.array()[0].msg);
         return res.redirect("/thome");
@@ -178,38 +182,74 @@ exports.postUplaod = (req,res,next)=>{
     });
     post.save().then(result =>{
       res.redirect("/thome");
-      return Follower.findOne({followid : req.user._id ,'followers.subscribe': 'abonne'}).then(followers =>{
-        if(followers){
-          if(followers.followers.length > 0){
-            for(let i= 0;i < followers.followers.length; i++){
-              transporter.sendMail({
-                to: followers.followers[i].email,
-                from : "cotast",
-                subject :"Nouvel Publication",
-                html :`<h1 style="text-align:center; font-family:courier,arial,helvetica;">Votre enseignant ${req.user.username} a ajouté une publication </h1><br>
-                <div style="display: inline-block; text-align:center;"><a href="${process.env.DOMAIN_NAME}/profil/${req.user._id}" style="background-color: #f44336;
-                color: white;
-                
-                margin :auto;
-                padding: 14px 25px;
-                text-align: center;
-                text-decoration: none;
-                border-radius: 4px;
-                display: inline-block;">Voir profil</a></div>
-                `
-              },(err,res)=>{
-                if(err){
-                  console.log(err);
-                }
-              });
-             
+      if(groupename === "tous"){
+        return Follower.findOne({followid : req.user._id ,'followers.subscribe': 'abonne'}).then(followers =>{
+          if(followers){
+            if(followers.followers.length > 0){
+              for(let i= 0;i < followers.followers.length; i++){
+                transporter.sendMail({
+                  to: followers.followers[i].email,
+                  from : "cotast",
+                  subject :"Nouvel Publication",
+                  html :`<h1 style="text-align:center; font-family:courier,arial,helvetica;">Votre enseignant ${req.user.username} a ajouté une publication </h1><br>
+                  <div style="display: inline-block; text-align:center;"><a href="${process.env.DOMAIN_NAME}/profil/${req.user._id}" style="background-color: #f44336;
+                  color: white;
+                  
+                  margin :auto;
+                  padding: 14px 25px;
+                  text-align: center;
+                  text-decoration: none;
+                  border-radius: 4px;
+                  display: inline-block;">Voir profil</a></div>
+                  `
+                },(err,res)=>{
+                  if(err){
+                    console.log(err);
+                  }
+                });
+               
+              }
             }
+  
           }
-
-        }
-        
-
-      })
+          
+  
+        })
+      }else{
+        return Room.findOne({roomname : groupename , "creator._id":req.user._id}).then(room =>{
+          
+          if(room){
+            if(room.users.length > 0){
+              for(let i= 0;i < room.users.length; i++){
+                transporter.sendMail({
+                  to: room.users[i].email,
+                  from : "cotast",
+                  subject :"Nouvel Publication",
+                  html :`<h1 style="text-align:center; font-family:courier,arial,helvetica;">Votre enseignant ${req.user.username} a ajouté une publication </h1><br>
+                  <div style="display: inline-block; text-align:center;"><a href="${process.env.DOMAIN_NAME}/profil/${req.user._id}" style="background-color: #f44336;
+                  color: white;
+                  
+                  margin :auto;
+                  padding: 14px 25px;
+                  text-align: center;
+                  text-decoration: none;
+                  border-radius: 4px;
+                  display: inline-block;">Voir profil</a></div>
+                  `
+                },(err,res)=>{
+                  if(err){
+                    console.log(err);
+                  }
+                });
+               
+              }
+            }
+  
+          }
+        })
+       
+      }
+      
       
     })
     .catch(err =>{
@@ -317,7 +357,7 @@ exports.createRoom = (req,res,next)=>{
     const room = new Room({
       roomname : roomname,
       roompassword : hashedPassword,
-      usersId : [],
+      users : [],
       messages : [],
       creator : req.user
     });

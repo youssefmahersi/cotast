@@ -1,6 +1,6 @@
 var button = document.getElementById('btnbtn');
 
-const follow = (btn,teacherid,csrf,subscriber) =>{
+const follow = (btn,teacherid,csrf,subscriber,teachername) =>{
   if(subscriber == "En Attente" || subscriber == "Abonné"){
     return false;
   }
@@ -11,6 +11,7 @@ const follow = (btn,teacherid,csrf,subscriber) =>{
         },
         body: JSON.stringify({
             teacherid : teacherid,
+            teachername : teachername,
             _csrf : csrf
         })
         

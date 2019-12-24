@@ -5,11 +5,38 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
     <%- include("../includes/momentf.ejs"); %>
     <%- include("../includes/navigation3.ejs"); %>
+    <link href="https://fonts.googleapis.com/css?family=Inria+Serif&display=swap" rel="stylesheet"> 
+
+    <style>
+      #hrefid:hover{
+        color: #00aeff;
+      }
+    </style>
     <br>
     <div class="container ">
       
         <div class="row" >
             <div class="col-md-6 offset-md-3 col-sm-12 ">
+              
+              <% if (myTeachers.length > 0) { %>
+                <div id="container" style="overflow:auto; height:120px;">
+                  <h4 class="text-center"><i class="fas fa-users"></i> <span class="badge badge-primary"><%=myTeachers.length%></span></h4>  
+                <% for (let teacher of myTeachers){%>
+                  
+                  <div class="list-group">
+                    <a href="/profil/<%= teacher.followid%>" class="list-group-item list-group-item-action flex-column align-items-start " id="hrefid">
+                      <div class="d-flex w-100 justify-content-between" >
+                        <h5 class="mb-1" id="hrefid" style="font-family: 'Inria Serif', serif;"><i class="fas fa-user-circle"></i> <%= teacher.followusername %></h5>
+                        
+                      </div>
+                    </a>
+                    
+                   
+                  </div>
+                  <%}%>
+                </div>
+                  <%}%>
+                 
                 <% if(message){%>
                   <script>
                     Swal.fire("<%= message%>");

@@ -5,7 +5,11 @@
         <%- include("../includes/momentf.ejs"); %>
         <%- include("../includes/navigation.ejs"); %>
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap" rel="stylesheet"> 
-
+        <style>
+            #hrefid:hover{
+              color: #00aeff;
+            }
+          </style>
         <div class="container">
                 <div class="row ">
                     
@@ -36,8 +40,41 @@
                                     </div>
                                     <div class="col-md-4">
                                         
-                                        <span class="badge badge-primary"><i class="fa fa-user"></i> <%= numfollow%> Eleves</span>
-                                        
+                                        <button type="button" class="badge badge-primary" data-toggle="modal" data-target="#exampleModalScrollable">
+                                            <i class="fa fa-user"></i> <%= numfollow%> Eleves
+                                          </button>
+                                          
+                                          <!-- Modal -->
+                                          <div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-scrollable" role="document">
+                                              <div class="modal-content">
+                                                <div class="modal-header">
+                                                  <h5 class="modal-title" id="exampleModalScrollableTitle"><i class="fas fa-users"></i> <%= followers.length%></h5>
+                                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                  </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <% if (followers.length > 0) { %>
+                                                        <% for (let follower of followers){%>
+                                                            <div class="list-group">
+                                                                <a href="#" class="list-group-item list-group-item-action flex-column align-items-start " id="hrefid">
+                                                                  <div class="d-flex w-100 justify-content-between" >
+                                                                    <h5 class="mb-1" id="hrefid" style="font-family: 'Inria Serif', serif;"><i class="fas fa-user-circle"></i> <%= follower.username %></h5>
+                                                                    
+                                                                  </div>
+                                                                </a>
+                                                                
+                                                               
+                                                              </div>
+                                                          <%}%>
+                                                          <%}else{%>
+                                                            <div class="text-danger text-center">Pas d abonnés</div>
+                                                            <%}%>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
                                         <span class="badge badge-danger" id="postsnum"><i class="fas fa-file"></i> <%= numposts%> Publications</span>
                                         <br>
                                         <button type="submit" class="btn btn-outline-danger " 

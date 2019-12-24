@@ -1,6 +1,7 @@
 <%- include("includes/head.ejs"); %>
 <body>
         <%- include("includes/body.ejs"); %>
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet"> 
         <script src="/js/moment/moment.js"></script>
         <script>
             function renderDate(value){
@@ -11,7 +12,7 @@
             function linkify(text) {
   var urlRegex =/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
   return text.replace(urlRegex, function(url) {
-      return '<a href="' + url + '" style="color :red;">' + url + '</a>';
+      return '<a href="' + url + '" style="color :yellow;" target="_blank">' + url + '</a>';
   });
 }
             </script>
@@ -53,13 +54,39 @@
     <div class="text-center">          
    
                 <div class="p-3 mb-2 ">
-                    <h1 class="text-center">Chat</h1>
+                  <div class="bg-white bg-light text-dark border border-secondary rounded " style="margin: 10px; ">
+                    <h3 class="text-center text-muted" style="font-family: 'Open Sans', sans-serif; margin: 5px; padding: 5px;"><i class="fas fa-user-friends"></i> <%= path%></h3>
+                   
+                        <div class="row">
+                          <div class="col-md-6">
+                            <p style="font-family: 'Open Sans', sans-serif;"><i class="fas fa-chalkboard-teacher" ></i> <%= teacher%></p>
+                          </div>
+                          <div class="col-md-6 ">
+                            <div class="btn-group">
+                              <button class="btn btn-duccess btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-users"></i> membres
+                              </button>
+                              <div class="dropdown-menu">
+                                <% if(users.length > 0){%>
+                                  <% for(let user of users){%>
+                                    
+                                    <a class="dropdown-item" href="#"><i class="fas fa-user"></i> <%= user.username%></a>
+                                    <%}%>
+                                    <%}%>
+                              </div>
+                            </div>
+                            
+                          </div>
+                          
+                      </div>
+                    </div>
+                   
                     <div class="card" id="card">
                     <div id="messages" class="card-block bg-light">
                         <% if(rooms.messages.length > 0){%>
                           <% for(let room of rooms.messages){%>
                             <div class="p-3 mb-2 bg-light text-dark border border-secondary rounded " style="margin : 3px; padding: 3px;">
-                                    <p class="text-black text-left"><i class="far fa-user"></i> <%= room.username%> : <span class="text-left bg-primary text-white rounded" style="padding: 4px;"><script>document.write(linkify("<%= room.message%>"));</script></span></p>
+                                    <p class="text-black text-left"><i class="fas fa-user-circle"></i> <%= room.username%> : <span class="text-left bg-primary text-white rounded" style="padding: 4px;"><script>document.write(linkify("<%= room.message%>"));</script></span></p>
                                     <p class="text-left"><script>document.write( renderDate(Number('<%= room.messagetime%>')));</script></p>
                             </div>
                         <%}%>

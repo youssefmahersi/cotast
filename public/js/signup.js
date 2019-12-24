@@ -1,23 +1,22 @@
 const signup = (btn,csrf)=>{
-    const username = btn.parentNode.querySelector('[name=username]').value;
-    const email = btn.parentNode.querySelector('[name=emails]').value;
-    const school = btn.parentNode.querySelector('[name=school]').value;
-    const status = btn.parentNode.querySelector('[name=status]').value;
-    const password =btn.parentNode.querySelector('[name=passwords]').value;
-    const confirmPassword = btn.parentNode.querySelector('[name=passwordconfirm]').value;
-    console.log(username,email,school,status,password,confirmPassword);
+    const username = btn.parentNode.querySelector('[name=username]');
+    const email = btn.parentNode.querySelector('[name=emails]');
+    const school = btn.parentNode.querySelector('[name=school]');
+    const status = btn.parentNode.querySelector('[name=status]');
+    const password =btn.parentNode.querySelector('[name=passwords]');
+    const confirmPassword = btn.parentNode.querySelector('[name=passwordconfirm]');
     fetch("/signup",{
         method :"POST",
         headers : {
             "content-type" :"application/json"
         },
         body :JSON.stringify({
-            username : username,
-            email : email,
-            school : school,
-            status: status,
-            password: password,
-            passwordconfirm : confirmPassword,
+            username : username.value,
+            email : email.value,
+            school : school.value,
+            status: status.value,
+            password: password.value,
+            passwordconfirm : confirmPassword.value,
             _csrf : csrf
         })
     }).then(result => {
@@ -25,7 +24,13 @@ const signup = (btn,csrf)=>{
       })
       .then(data => {
         if(data.message === "success"){
-            return window.location = "/";
+            username.value = '';
+            email.value ='';
+            school.value='';
+            status.value='';
+            password.value='';
+            confirmPassword.value='';
+            return Swal.fire("Succés","vous êtes inscrit avec succès","success");
         }
        Swal.fire(data.message);
 

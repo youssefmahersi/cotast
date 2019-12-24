@@ -9,7 +9,7 @@ const roomSchema = new Schema({
         type : String,
         required : true
     },
-    usersId : {
+    users : {
         type : Array,
         required : true
     },

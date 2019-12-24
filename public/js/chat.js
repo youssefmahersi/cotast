@@ -1,6 +1,6 @@
 var envVariable = document.querySelector('[name=envVariable]').value;
 console.log(envVariable)
-var socket = io.connect(envVariable);
+var socket = io.connect(envVariable+':3000');
 
 const messageContainer = document.getElementById("messages");
 const statusContainer = document.getElementById("status2");
@@ -60,7 +60,7 @@ function appendMessage(m) {
   
   messageElement.className = "p-3 mb-2 bg-light text-dark border border-secondary rounded"
   messageElement.style = "margin : 3px; padding: 3px;"
-  messageElement.innerHTML = `  <p class='text-black text-left'><i class='far fa-user'></i> ${m.username} : <span class='text-left bg-primary text-white rounded' style='padding: 4px;'>${mss}</span></p><p class='text-left'>${time}</p>`
+  messageElement.innerHTML = `  <p class='text-black text-left'><i class="fas fa-user-circle"></i> ${m.username} :<br> <span class='text-left bg-primary text-white rounded' style='padding: 4px;'>${mss}</span></p><p class='text-left'>${time}</p>`
   messageContainer.append(messageElement)
   messageContainer.scrollTop = messageContainer.scrollHeight;
 }
@@ -87,7 +87,7 @@ function appendMessage3(m) {
 function linkify(text) {
   var urlRegex =/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
   return text.replace(urlRegex, function(url) {
-      return '<a href="' + url + '" style="color :red;">' + url + '</a>';
+      return '<a href="' + url + '" style="color :yellow;" target="_blank">' + url + '</a>';
   });
 }
 // btnSend.addEventListener('click', () => {

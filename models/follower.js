@@ -6,6 +6,10 @@ const followerSchema = new schema({
         required :true,
         ref : "User"
     },
+    followusername : {
+        type : String,
+        required :true
+    },
     followers :[
         {
             username : {
