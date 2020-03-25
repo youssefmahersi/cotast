@@ -27,7 +27,18 @@ exports.getSHome = (req,res,next)=>{
         Follower.find({'followers.followerid' : req.user._id , 'followers.subscribe' : 'abonne'}).then(fol=>{     
     Post.find({"creator.school":req.user.school}).sort({ 'createdAt' : -1 }).then(posts=>{
         Folder.find({creatorId : req.user._id}).then(folders=>{
-            var post2 = [];
+            Room.find().then(rooms =>{
+                let rooma = [];
+                for(let i =0;i<rooms.length; i++){
+                   
+                    var check = rooms[i].users.filter(user=> user._id.toString() === req.user._id.toString());
+                    
+                    if(check.length > 0){
+                        rooma.push({roomname:rooms[i].roomname,
+                        id: rooms[i]._id});
+                    }
+                }
+                var post2 = [];
             if(fol){
                 posts.forEach(post => {
                     for(let i = 0 ; i< fol.length ; i++){
@@ -46,9 +57,13 @@ exports.getSHome = (req,res,next)=>{
                     posts : post2,
                     folders : folders,
                     message : message,
-                    myTeachers : fol ||[]
+                    myTeachers : fol ||[],
+                    rooms : rooma
                     
                 });
+            })
+                
+            
         })
     
     }) 
@@ -59,32 +74,7 @@ exports.getSHome = (req,res,next)=>{
     })
     
 }
-exports.getChat = (req,res,next)=>{
-    Room.find().then(rooms =>{
-        let rooma = [];
-        for(let i =0;i<rooms.length; i++){
-           
-            var check = rooms[i].users.filter(user=> user._id.toString() === req.user._id.toString());
-            
-            if(check.length > 0){
-                rooma.push({roomname:rooms[i].roomname,
-                id: rooms[i]._id});
-            }
-        }
-        
-        res.render("student/schat",{
-            title : "Chat",
-            path : "chat",
-            rooms : rooma
-        })
-        
-    }).catch(err =>{
-        const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    })
-    
-}
+
 exports.getteacherProfil = (req,res,next)=>{
     const teacherId = req.params.teacherid;
     User.findOne({_id : teacherId}).then(teacher=>{
@@ -170,32 +160,44 @@ exports.getProfil = (req,res,next)=>{
     
     
     Folder.find({creatorId : req.user._id}).then(folders =>{
-      
-        let message2 = req.flash('edit');
-        if (message2.length > 0) {
-            message2 = message2[0];
-        } else {
-            message2 = null;
-        }
-        let message = req.flash('sprofil');
-        if (message.length > 0) {
-            message = message[0];
-        } else {
-            message = null;
-        }
-        res.render("student/sprofil",{
-            title : "Profil",
-            path : "profil",
-            message : message,
-            message2: message2,
-            folders :folders,
-            username : req.user.username,
-            email: req.user.email,
-            school : req.user.school,
-            editMode : editMode
-            
-
-    })
+        Room.find().then(rooms =>{
+            let rooma = [];
+            for(let i =0;i<rooms.length; i++){
+               
+                var check = rooms[i].users.filter(user=> user._id.toString() === req.user._id.toString());
+                
+                if(check.length > 0){
+                    rooma.push({roomname:rooms[i].roomname,
+                    id: rooms[i]._id});
+                }
+            }
+            let message2 = req.flash('edit');
+            if (message2.length > 0) {
+                message2 = message2[0];
+            } else {
+                message2 = null;
+            }
+            let message = req.flash('sprofil');
+            if (message.length > 0) {
+                message = message[0];
+            } else {
+                message = null;
+            }
+            res.render("student/sprofil",{
+                title : "Profil",
+                path : "profil",
+                message : message,
+                message2: message2,
+                folders :folders,
+                username : req.user.username,
+                email: req.user.email,
+                school : req.user.school,
+                editMode : editMode,
+                rooms : rooma
+                
+    
+        })
+        })
 
     }).catch(err=>{
         const error = new Error(err);

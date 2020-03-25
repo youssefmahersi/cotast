@@ -2,27 +2,76 @@
 <body >
     <%- include("../includes/body.ejs"); %>
     <script src="/js/moment/moment.js"></script>
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300i,400,500i&display=swap" rel="stylesheet">
     <%- include("../includes/momentf.ejs"); %>
     <%- include("../includes/navigation.ejs"); %>
-    
+    <style>
+      [type="file"] {
+border: 0;
+clip: rect(0, 0, 0, 0);
+height: 1px;
+overflow: hidden;
+padding: 0;
+position: absolute !important;
+white-space: nowrap;
+width: 1px;
+}
+
+[type="file"] + label {
+font-size: small;
+text-align: center;
+
+background-color: #6c757d;
+border-radius: 4rem;
+color: #fff;
+cursor: pointer;
+display: inline-block;
+padding: 10px;
+padding-left: 2rem 4rem;
+}
+
+[type="file"]:focus + label,
+[type="file"] + label:hover {
+background-color: #f15d22;
+}
+
+[type="file"]:focus + label {
+outline: 1px dotted #000;
+}
+*:focus {
+    outline: none;
+}
+      
+      </style>
 <br>
     <div class="container">
             <div class="row" >
                 
                 <div class="col-md-6 offset-md-3 col-sm-12">
-                    <h2 class="text-muted text-left"> Acceuil</h2>
-                  <div class="p-3 mb-2 bg-white border ">
+                  <!-- <script>
+                    var socket = io.connect('http://localhost:3000/');
+                    socket.on('new message', (msg) => {
+                      console.log(msg)
+});
+                    </script> -->
+                    <h2 class="text-muted text-left" style="font-family: 'Montserrat', sans-serif; font-weight: bold;"> Acceuil</h2>
+                  <div class="p-3 mb-2 bg-white border " style="box-shadow: 0 2px 3px #ccc;
+                  border : 1px solid #eee;
+                  
+                  box-sizing: border-box;">
                     
                         <form class="md-form" style="margin-top: 10px;" action="/upload" method="POST" enctype="multipart/form-data">
                                 <div class="form-group" >
                                   
-                                                <label for="ControlTextarea">commentaire</label>
-                                        <textarea class="form-control bg-transparent border border-0" id="ControlTextarea" name="description" rows="2" placeholder="Ecrivez votre commentaire"></textarea>
+                                  
+                                                <label for="ControlTextarea" style="font-family: 'Montserrat', sans-serif; font-weight: bold;">commentaire</label>
+                                        <textarea class="form-control bg-transparent border border-0" id="ControlTextarea" name="description" rows="2" style="font-family: 'Montserrat', sans-serif;" placeholder="Ecrivez votre commentaire"></textarea>
                                       </div>
                                       <% if(rooms.length >0){%>
                                       <div class="form-group">
-                                        <select class="form-control" id="InputSelect" name = "groupename">
-                                          <option value="tous">Choisissez un groupe</option>
+                                        <select class="form-control " id="InputSelect" name = "groupename" style="font-family: 'Montserrat', sans-serif; outline: auto; border: none;">
+                                          <option value="tous"  >Choisissez un groupe</option>
                                                 <%for(let room of rooms){%>
                                                   <option value="<%=room.roomname%>"><%=room.roomname%></option>
                                                   <%}%>
@@ -34,16 +83,18 @@
                                           <div class="form-group" >
                                                        <input type="hidden" name="_csrf" value="<%= csrfToken%>"> 
                                                   <input type="file" name="file" class="form-control-file"  id="inputFile">
+                                                  <label for="inputFile" style="font-family: 'Montserrat', sans-serif; font-weight: bold;" /><i class="fas fa-file"></i> PDF/Image</label>
+                                                  
                                                 </div>
                                                
-                                                        <button type="submit" class="btn btn-outline-success"><i class="fas fa-upload"></i></button>
+                                                        <button type="submit" class="btn btn-success"  style="font-family: 'Montserrat', sans-serif; font-weight: bold; width: 100%;">Publier</button>
                                                 
                                               
                                           </form>
                                           
                                           <% if(message){ %>
                                             <br>
-                                            <p class="alert alert-danger text-muted"><%= message %></p>
+                                            <p class="text-danger text-center"><%= message %></p>
                                             <% }%>
                                         </div>
                                         
@@ -51,17 +102,21 @@
                                         <% if (posts.length > 0) { %>
                                           <% for (let post of posts){%>
                                             <% if(post.type === "application/pdf"){%>
-                                              <div class="p-3 mb-2 bg-white border" id="post">
-                                                <h3 class="text-left" style="color: #0087bd;"><i class="far fa-user-circle" style="color: black;"></i> <%= post.creator.username%></h3>
-                                                <div class="row">
+                                              <div class="p-3 mb-2 bg-white border" id="post"style="box-shadow: 0 2px 3px #ccc;
+                                              border : 1px solid #eee;
+                                              
+                                              box-sizing: border-box;">
+                                            <h3 class="text-left" style="font-family: 'Montserrat', sans-serif; font-size: 22px; font-weight: bold; color: #0087bd;"><i class="fas fa-user-circle" style="color: black;"></i> <%= post.creator.username%></h3>
+                                            <div class="row">
                                                 <div class="col-md-2">
                                                     <img src="https://assets.jimstatic.com/s/img/cc/icons/pdf.png" alt="">
                                                 </div>
-                                                <div class="col-md-10">
-                                                <p><%= post.comment%></p>
+                                                <div class="col-md-10">  
+                                                  <p style="font-family: 'Montserrat', sans-serif; font-weight: bold; font-size: 15px;"><%= post.comment%></p>
+
                                                 
-                                            <p><script>document.write( renderDate(Number('<%= post.createdAt%>')));</script></p>
-                                            <div class="btn-group" role="group" aria-label="Basic example">
+                                                  <p style="font-family: 'Montserrat', sans-serif; font-weight: bold; font-size: small;"><script>document.write( renderDate(Number('<%= post.createdAt%>')));</script></p>
+                                                  <div class="btn-group" role="group" aria-label="Basic example">
                                                 <a class="btn btn-primary" href="<%= post.filename%>" target="_blank"><i class="fas fa-eye"> </i> Lire</a>
                                                 <a class="btn btn-primary" href="<%= post.filename%>" download><i class="fas fa-upload"></i> Telecharger</a>
                                               </div>
@@ -72,16 +127,20 @@
                                             
                                           </div>  
                                               <%}else{%>
-                                              <div class="p-3 mb-2 bg-white border" id="post">
-                                                <h3 class="text-left" style="color: #0087bd;"><i class="far fa-user-circle" style="color: black;"></i> <%= post.creator.username%></h3>
+                                              <div class="p-3 mb-2 bg-white border" id="post" style="box-shadow: 0 2px 3px #ccc;
+                                              border : 1px solid #eee;
+                                              
+                                              box-sizing: border-box;">
+                                            <h3 class="text-left" style="font-family: 'Montserrat', sans-serif; font-size: 22px; font-weight: bold; color: #0087bd;"><i class="fas fa-user-circle" style="color: black;"></i> <%= post.creator.username%></h3>
                                                 
-                                                <p class="text-left"><%= post.comment%></p>
+                                            <p style="font-family: 'Montserrat', sans-serif; font-weight: bold; font-size: 15px;"><%= post.comment%></p>
+
                                             <img src="<%= post.filename%>" class="rounded mx-auto d-block" alt="..." style="width: 100%;
                                             ">
                                             <br>
-                                            <p><script>document.write( renderDate(Number('<%= post.createdAt%>')));</script></p>
+                                            <p style="font-family: 'Montserrat', sans-serif; font-weight: bold; font-size: small;"><script>document.write( renderDate(Number('<%= post.createdAt%>')));</script></p>
                                             <div class="btn-group" role="group" aria-label="Basic example">
-                                                      <a class="btn btn-warning" href="<%= post.filename%>" role="button" download><i class="fas fa-upload"></i></a>
+                                                      <a class="btn btn-primary" href="<%= post.filename%>" role="button" download><i class="fas fa-upload"></i></a>
                                                      
                                                       
                                                     </div>
@@ -89,9 +148,24 @@
 
                                           <%}}%>
                                           <%}else{%>
-                                            <div class="alert alert-dark text-center" role="alert">
-                                                Pas de publications 
-                                              </div>
+                                            <div class="p-3 mb-2 bg-white border" style="
+                                        display: block;
+                                        margin: auto;
+                                        box-shadow: 0 2px 3px #ccc;
+                                        border : 1px solid #eee;
+                                        text-align: center;
+                                        box-sizing: border-box;
+                                        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 22px;font-style: initial; font-weight: bolder; color: #616161;">
+                                        <h5 style="padding: 3px;"><span style="color:black;">1. <i class="fas fa-plus-circle"></i></span> Publier des publications</h5>
+                                        <h5 style="padding: 3px;"><span style="color:black;">2. <i class="fas fa-users"></i></span> 
+                                          Créer un groupe</h5>
+                                        <h5 style="padding: 3px;"><span style="color:black;">3. <i class="fas fa-check-square"></i> </span>
+                                          Accepter les demandes de vos élèves</h5>
+                                          <h5 style="padding: 3px;"><span style="color:black;">4. <i class="fas fa-comments"></i></span> Chater avec vos élèves</h5> 
+                                        </div>
+                                        <div class="alert alert-dark text-center" role="alert"margin="5px">
+                                          Pas de publications
+                                        </div>
                                             <%}%>
                                           
                                         
@@ -103,9 +177,9 @@
                     </div>
                     </div>
                 
-                
-                
-                    <%- include("../includes/footer.ejs");%>
+                    <% if(posts.length > 2 ){%>
+                      <%- include("../includes/footer.ejs");%>
+                      <%}%>
                   
             
 </body>

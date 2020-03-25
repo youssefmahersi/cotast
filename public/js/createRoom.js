@@ -17,7 +17,7 @@ const createRoom = (btn,csrf)=>{
       })
       .then(data => {
         if(data.message === "Room created succesfuly"){
-           return window.location = "/tchat";
+           return window.location = "/tprofil";
         }
        Swal.fire(data.message);
 

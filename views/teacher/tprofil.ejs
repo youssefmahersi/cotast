@@ -5,6 +5,8 @@
         <%- include("../includes/momentf.ejs"); %>
         <%- include("../includes/navigation.ejs"); %>
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap" rel="stylesheet"> 
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:300i,400,500i&display=swap" rel="stylesheet">
+
         <style>
             #hrefid:hover{
               color: #00aeff;
@@ -14,8 +16,11 @@
                 <div class="row ">
                     
                     <br>
-                    <div class="col-md-6 offset-md-3 col-sm-12 bg-light" style="margin-top: 10px; ">
-                        <ul class="nav nav-tabs">
+                    <div class="col-md-6 offset-md-3 col-sm-12 bg-light" style="margin-top: 10px; box-shadow: 0 2px 3px #ccc;
+                    border : 1px solid #eee;
+                    
+                    box-sizing: border-box;">
+                        <ul class="nav nav-tabs" style="overflow-x: hidden;">
                             <li class="nav-item">
                                 <a href="" data-target="#profile" data-toggle="tab" class="nav-link <%= editMode === 'true' ? '' : 'active' %>">Profil</a>
                             </li>
@@ -24,16 +29,19 @@
                                 <a href="" data-target="#edit" data-toggle="tab" class="nav-link <%= editMode === 'true' ? 'active' : '' %>">Modifier</a>
                             </li>
                             <li class="nav-item">
-                                <a href="" data-target="#request" data-toggle="tab" class="nav-link">demande d'élève</a>
+                              <a href="" data-target="#createGroupe" data-toggle="tab" class="nav-link <%= editMode === 'true' ? 'active' : '' %>">Groupe</a>
+                          </li>
+                            <li class="nav-item">
+                                <a href="" data-target="#request" data-toggle="tab" class="nav-link">Demandes</a>
                             </li>
                         </ul>
                         <div class="tab-content py-4">
                             <div class="tab-pane <%= editMode === 'true' ? '' : 'active' %>" id="profile">
-                                <h1><i class="fas fa-user-circle"></i><h5 class="mb-4">Profil </h5></h1>
+                                <h1><i class="fas fa-user-circle"></i><h5 class="text-primary" style="font-family: 'Source Sans Pro', sans-serif;"><%= username%></h5></h1>
                                 
                                 <div class="row">
                                     <div class="col-md-7">
-                                        <h5 class="text-primary" style="font-family: 'Source Sans Pro', sans-serif;"><%= username%></h5>
+                                        
                                         <h5 class="text-secondary" style="font-family: 'Source Sans Pro', sans-serif;"><%= email%></h5>
                                         <h6 class="text-secondary" style="font-family: 'Source Sans Pro', sans-serif;"><%= school%></h6>
                                         
@@ -79,6 +87,7 @@
                                         <br>
                                         <button type="submit" class="btn btn-outline-danger " 
                                              onclick="logout(this,'<%= csrfToken %>')" style="margin: 5px;"><i class="fas fa-sign-out-alt"></i></button>
+                                             
                                     </div>
                                     
                                 </div>
@@ -127,7 +136,6 @@
                                             <label class="col-lg-3 col-form-label form-control-label">Changer lycée</label>
                                             <div class="col-lg-9">
                                                 <select id="user_time_zone" class="form-control" size="0" name="school">
-                                                        <option value="<%= school%>"><%= school%></option>
                                                     <option value="Bardo">Bardo</option>
                                                     <option value="Rue de russie">Rue de russie</option>
                                                 </select>
@@ -148,12 +156,32 @@
                                     <%}%>
                                
                             </div>
+                            <div class="tab-pane" id="createGroupe">
+                            
+                                  <div class="form-group ">
+                                    <label for="roomName">Nom de groupe</label>
+                                    <input type="text" class="form-control" id="roomName" name="roomName">
+                                  </div>
+                                 
+                                  <div class="form-group">
+                                         
+                                    <label for="roomPassword">mot de passe de groupe</label>
+                                    <input type="password" class="form-control" id="roomPassword" name="roomPassword">
+                                      </div>
+                                        <button type="click" class="btn btn-primary" onclick="createRoom(this,'<%= csrfToken %>')"><i class="fas fa-plus"></i> Groupe</button>
+                            
+                              <% if(message){%>
+                                  <div class="text-center"><p class="text-danger"><%= message %></p></div>
+                                  <%}%>
+                             
+                          </div>
                         </div>
+                        
                     </div>
                     
                     <div class="col-md-6 offset-md-3 col-sm-12 border-top">
                         <br>
-                            <h2 class="text-center text-dark" style="font-family: 'Source Sans Pro', sans-serif;">Mes publications</h2>
+                            <h2 class="text-center text-dark" style="font-family: 'Montserrat', sans-serif; font-weight: bold;">Mes publications</h2>
                             <div class="text-center">
                             
                                 </div>
@@ -162,17 +190,20 @@
                                     <% for (let post of posts){%>
                                       <% if(post.type === "application/pdf"){%>
                                         <article>
-                                                <div class="p-3 mb-2 bg-white border" id="post">
-                                                        <h3 class="text-left" style="color: #0087bd;"><i class="far fa-user-circle" style="color: black;"></i> <%= post.creator.username%></h3>
-                                                        <div class="row">
+                                                <div class="p-3 mb-2 bg-white border" id="post" style="box-shadow: 0 2px 3px #ccc;
+                                                border : 1px solid #eee;
+                                                
+                                                box-sizing: border-box;">
+                                            <h3 class="text-left" style="font-family: 'Montserrat', sans-serif; font-size: 22px; font-weight: bold; color: #0087bd;"><i class="fas fa-user-circle" style="color: black;"></i> <%= post.creator.username%></h3>
+                                            <div class="row">
                                                         <div class="col-md-2">
                                                             <img src="https://assets.jimstatic.com/s/img/cc/icons/pdf.png" alt="">
                                                         </div>
                                                         <div class="col-md-10">
-                                                        <p><%= post.comment%></p>
+                                                          <p style="font-family: 'Montserrat', sans-serif; font-weight: bold; font-size: 15px;"><%= post.comment%></p>
                                                         
-                                                    <p><script>document.write( renderDate(Number('<%= post.createdAt%>')));</script></p>
-                                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                                          <p style="font-family: 'Montserrat', sans-serif; font-weight: bold; font-size: small;"><script>document.write( renderDate(Number('<%= post.createdAt%>')));</script></p>
+                                                          <div class="btn-group" role="group" aria-label="Basic example">
                                                         <a class="btn btn-primary" href="<%= post.filename%>" target="_blank"><i class="fas fa-eye"> </i> Lire</a>
                                                         <a class="btn btn-primary" href="<%= post.filename%>" download><i class="fas fa-upload"></i> Telecharger</a>
                                                         <input type="hidden" value="<%= post._id %>" name="postId">
@@ -188,16 +219,19 @@
                                 </article>
                                         <%}else{%>
                                             <article>
-                                        <div class="p-3 mb-2 bg-white border" id="post">
-                                          <h3 class="text-left" style="color: #0087bd;"><i class="far fa-user-circle" style="color: black;"></i> <%= post.creator.username%></h3>
+                                        <div class="p-3 mb-2 bg-white border" id="post" style="box-shadow: 0 2px 3px #ccc;
+                                        border : 1px solid #eee;
+                                        
+                                        box-sizing: border-box;">
+                                            <h3 class="text-left" style="font-family: 'Montserrat', sans-serif; font-size: 22px; font-weight: bold; color: #0087bd;"><i class="fas fa-user-circle" style="color: black;"></i> <%= post.creator.username%></h3>
                                           
-                                          <p class="text-left"><%= post.comment%></p>
+                                            <p style="font-family: 'Montserrat', sans-serif; font-weight: bold; font-size: 15px;"><%= post.comment%></p>
                                       <img src="<%= post.filename%>" class="img-fluid rounded mx-auto d-block" alt="Responsive image" style="width: 100%;
                                       ">
                                       <br>
-                                      <p><script>document.write( renderDate(Number('<%= post.createdAt%>')));</script></p>
+                                      <p style="font-family: 'Montserrat', sans-serif; font-weight: bold; font-size: small;"><script>document.write( renderDate(Number('<%= post.createdAt%>')));</script></p>
                                       <div class="btn-group" role="group" aria-label="Basic example">
-                                                <a class="btn btn-warning" href="<%= post.filename%>" role="button" download><i class="fas fa-upload"></i></a>
+                                                <a class="btn btn-primary" href="<%= post.filename%>" role="button" download><i class="fas fa-upload"></i></a>
                                                 <input type="hidden" value="<%= post._id %>" name="postId">
                                                 <button class="btn btn-danger" type="button" onclick="deleteProduct(this,'<%= csrfToken%>')"><i class="fas fa-trash"></i></button>
                                               </div>
@@ -218,14 +252,16 @@
                    
                 </div>
             </div>
-
-            <%- include("../includes/footer.ejs");%>
-              
+            <% if(posts.length > 2 ){%>
+              <%- include("../includes/footer.ejs");%>
+              <%}%>
 </body>
 
 <%- include("../includes/script.ejs");%>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 <script src="/js/delete.js"></script>
+ 
+<script src="/js/createRoom.js"></script>
 <script src="/js/acceptStudent.js"></script>
 <script src="/js/rejectStudent.js"></script>
 <script src="/js/logout.js"></script>

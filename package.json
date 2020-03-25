@@ -4,7 +4,7 @@
   "description": "helps students in school",
   "main": "index.js",
   "engines": {
-    "node" : "12.13.0"
+    "node": "12.13.0"
   },
   "scripts": {
     "start": "node index",
@@ -14,7 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "@sendgrid/mail": "^6.4.0",
-    "bcrypt": "^3.0.6",
+    "bcrypt": "^3.0.8",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "connect-flash": "^0.1.1",

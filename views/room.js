@@ -1,7 +1,6 @@
-const Room = require("../models/room");
+﻿const Room = require("../models/room");
 const Cryptr = require('cryptr');
 const cryptr = new Cryptr(`${process.env.CRYPTR_KEY}`);
-
 
 exports.getRoom = (req,res,next)=>{
     Room.findOne({_id : req.params.roomId}).then(room=>{
@@ -10,11 +9,8 @@ exports.getRoom = (req,res,next)=>{
         }
 
         let messages = room.messages;
-        messages.forEach((el,i) => {
-            
-           return el.message =  cryptr.decrypt(messages[i].message)
-        });
-        
+messages.forEach((el,i) => el.message = "salut");
+
         let check = room.users.filter(user => user._id.toString() === req.user._id.toString());
         
         if(room.creator._id.toString() === req.user._id.toString() || check.length >0){

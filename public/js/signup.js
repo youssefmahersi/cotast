@@ -30,7 +30,7 @@ const signup = (btn,csrf)=>{
             status.value='';
             password.value='';
             confirmPassword.value='';
-            return Swal.fire("Succés","vous êtes inscrit avec succès","success");
+            return Swal.fire("Succés","Vérifiez votre email pour continuer","success");
         }
        Swal.fire(data.message);
 

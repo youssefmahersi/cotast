@@ -1,5 +1,6 @@
 <%- include("../includes/head.ejs"); %>
 <body>
+  <link rel="icon" type="image/png" href="./assets/cotast%20AI.png" />
     <%- include("../includes/body.ejs"); %>
     <script src="/js/moment/moment.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
@@ -7,6 +8,7 @@
     <%- include("../includes/navigation3.ejs"); %>
     <link href="https://fonts.googleapis.com/css?family=Inria+Serif&display=swap" rel="stylesheet"> 
 
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300i,400,500i&display=swap" rel="stylesheet">
     <style>
       #hrefid:hover{
         color: #00aeff;
@@ -26,7 +28,7 @@
                   <div class="list-group">
                     <a href="/profil/<%= teacher.followid%>" class="list-group-item list-group-item-action flex-column align-items-start " id="hrefid">
                       <div class="d-flex w-100 justify-content-between" >
-                        <h5 class="mb-1" id="hrefid" style="font-family: 'Inria Serif', serif;"><i class="fas fa-user-circle"></i> <%= teacher.followusername %></h5>
+                        <h5 class="mb-1" id="hrefid" style="font-family: 'Montserrat', sans-serif; font-weight: bold;"><i class="fas fa-user-circle"></i> <%= teacher.followusername %></h5>
                         
                       </div>
                     </a>
@@ -48,17 +50,21 @@
                                     <% if (posts.length > 0) { %>
                                       <% for (let post of posts){%>
                                         <% if(post.type === "application/pdf"){%>
-                                          <div class="p-3 mb-2 bg-white border" id="post">
-                                            <h3 class="text-left" style="color: #0087bd;"><i class="far fa-user-circle" style="color: black;"></i> <%= post.creator.username%></h3>
+                                          <div class="p-3 mb-2 bg-white border" id="post" style="
+                                          box-shadow: 0 2px 3px #ccc;
+                                          border : 1px solid #eee;
+                                          
+                                          box-sizing: border-box;">
+                                            <h3 class="text-left" style="font-family: 'Montserrat', sans-serif; font-size: 22px; font-weight: bold; color: #0087bd;"><i class="fas fa-user-circle" style="color: black;"></i> <%= post.creator.username%></h3>
                                             
                                             <div class="row">
                                                 <div class="col-md-2">
                                                     <img src="https://assets.jimstatic.com/s/img/cc/icons/pdf.png" alt="">
                                                 </div>
                                                 <div class="col-md-10">
-                                                <p><%= post.comment%></p>
+                                                <p style="font-family: 'Montserrat', sans-serif; font-weight: bold; font-size: 15px;"><%= post.comment%></p>
                                                 
-                                                <p><script>document.write( renderDate(Number('<%= post.createdAt%>')));</script></p>
+                                                <p style="font-family: 'Montserrat', sans-serif; font-weight: bold; font-size: small;"><script>document.write( renderDate(Number('<%= post.createdAt%>')));</script></p>
                                                 <div class="btn-group" role="group" aria-label="Basic example">
                                                     <a class="btn btn-primary" href="<%= post.filename%>" target="_blank"><i class="fas fa-eye"> </i> Lire</a>
                                                     <a class="btn btn-primary" href="<%= post.filename%>" download><i class="fas fa-upload"></i> Telecharger</a>
@@ -97,34 +103,73 @@
                                         
                                       </div>  
                                           <%}else{%>
-                                          <div class="p-3 mb-2 bg-white border" id="post">
-                                            <h3 class="text-left" style="color: #0087bd;"><i class="far fa-user-circle" style="color: black;"></i> <%= post.creator.username%></h3>
+                                          <div class="p-3 mb-2 bg-white border" id="post" style="box-shadow: 0 2px 3px #ccc;
+                                          border : 1px solid #eee;
+                                          
+                                          box-sizing: border-box;">
+                                          <h3 class="text-left" style="font-family: 'Montserrat', sans-serif; font-size: 22px; font-weight: bold; color: #0087bd;"><i class="fas fa-user-circle" style="color: black;"></i> <%= post.creator.username%></h3>
                                             
-                                            <p class="text-left"><%= post.comment%></p>
+                                          <p style="font-family: 'Montserrat', sans-serif; font-weight: bold; font-size: 15px;"><%= post.comment%></p>
                                         <img src="<%= post.filename%>" class="img-fluid rounded mx-auto d-block" alt="Responsive image"  style="width: 100%;
                                         ">
-                                        <br>
-                                        <p><script>document.write( renderDate(Number('<%= post.createdAt%>')));</script></p>
+                                      
+                                        <p style="font-family: 'Montserrat', sans-serif; font-weight: bold; font-size: small;"><script>document.write( renderDate(Number('<%= post.createdAt%>')));</script></p>
                                         <div class="btn-group" role="group" aria-label="Basic example">
-                                                  <a class="btn btn-warning" href="<%= post.filename%>" role="button" download><i class="fas fa-upload"></i></a>
+                                                  <a class="btn btn-primary" href="<%= post.filename%>" role="button" style="padding:6px 11px;" download><i class="fas fa-upload"></i></a>
                                                  
                                                 </div>
                                       </div>
 
                                       <%}}%>
                                       <%}else{%>
-                                        <div class="alert alert-dark text-center" role="alert">
+                                        <div class="p-3 mb-2 bg-white border" style="
+                                        display: block;
+                                        margin: auto;
+                                        box-shadow: 0 2px 3px #ccc;
+                                        border : 1px solid #eee;
+                                        text-align: center;
+                                        box-sizing: border-box;
+                                        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 22px;font-style: initial; font-weight: bolder; color: #616161;">
+                                        <h5 style="padding: 3px;"><span style="color:black;">1. <i class="fas fa-search"></i></span> Trouvez votre enseignant</h5>
+                                        <h5 style="padding: 3px;"><span style="color:black;">2. <i class="fas fa-user-plus"></i></span> suis-le</h5>
+                                        <h5 style="padding: 3px;"><span style="color:black;">3. <i class="fas fa-envelope"></i> </span>
+                                          Etre averti les nouvelles publications</h5>
+                                          <h5 style="padding: 3px;"><span style="color:black;">4. <i class="fas fa-sitemap"></i></span> Organisez votre travail ou téléchargez-le</h5> 
+                                        </div>
+                                        <div class="alert alert-dark text-center" role="alert"margin="5px">
+                                          Pas de publications 
+                                        </div>
+                                        <!-- <div class="alert alert-dark text-center" role="alert" style="margin: 0 auto; ">
                                             pas de publication
-                                          </div>
+                                          </div> -->
+
                                         <%}%>
                                                                 
                 </div>
                 
                 </div>
                 </div>
-
-                <%- include("../includes/footer.ejs");%>
-</body>
+                <% if(posts.length >2){ %>
+                  <%- include("../includes/footer.ejs");%>
+                  <%}else {%>
+                    <footer class="page-footer font-small "style="position: fixed;
+                    left: 0;
+                    bottom: 0;
+                    width:100%;
+                    text-align : center;" >
+           
+                      <!-- Copyright -->
+                      <div class="footer-copyright text-center py-3" style="font-family: 'Source Sans Pro', sans-serif; font-weight: bold;">© 2020 Copyright :
+                        <a style="font-family: 'Source Sans Pro', sans-serif; font-weight: bold;"> Cotast</a>
+                        <p style="font-family: 'Source Sans Pro', sans-serif; font-weight: bold;">Créé par <samp class="text-info">Youssef Mahersi</samp> </p>
+                      </div>
+                      <!-- Copyright -->
+                    
+                    </footer>
+                   
+                    
+                  <%} %>
+                </body>
 <script src="/js/add-content.js"></script>
 
 

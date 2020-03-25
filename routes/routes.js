@@ -64,17 +64,15 @@ router.post("/login",[
       .trim()
 ],controller.postLogin);
 
-
-
+router.get('/confirmation/:token', controller.confirmationPost);
+// app.post('/resend', controller.resendTokenPost);
 
 /////teacher
 
 router.get('/thome',auths ,auth.authStudent, tController.getTHome);
-
-router.get("/tchat",auths,auth.authStudent,tController.getChat);
 router.get("/tprofil",auths,auth.authStudent,tController.getProfil);
 router.post("/upload",auths,auth.authStudent,[
-    body("description","invalide commentaire").not().isEmpty().isLength({min:3}).withMessage("bref commentaire").isString()
+    body("description","invalide commentaire").not().isEmpty().isLength({min:4}).withMessage("le Commentaire doit être au moins de 4 caractères").isString()
     .trim()
 ],tController.postUplaod);
 router.post("/edit-user",auths,auth.authStudent,[body("username","Nom d'utilisateur invalide").trim().not().isEmpty().withMessage("Nom d'utilisateur vide").isLength({min : 4 }).withMessage("le nom d'utilisateur doit être au moins avec 4 caractères"),
@@ -92,14 +90,13 @@ router.post("/create-room",auths,auth.authStudent,[body("roomName","nom de group
         }
         return true;
     })
-}).trim(),body("roomPassword","mot de passe de groupe invalide").not().isEmpty().isLength({min : 4 }).withMessage("mot de passe de la chambre doit être au moins de 4 caractères")],tController.createRoom)
+}).trim(),body("roomPassword","mot de passe de groupe invalide").not().isEmpty().isLength({min : 4 }).withMessage("mot de passe doit être au moins de 4 caractères")],tController.createRoom)
 router.post("/logoutt",auths,auth.authStudent,tController.logout);
 
 router.post("/acceptStudent",auths,auth.authStudent,tController.acceptStudent);
 router.post("/rejectStudent",auths,auth.authStudent,tController.rejectStudent);
 /////student
 router.get("/shome",auths,auth.authTeacher,sController.getSHome);
-router.get("/schat",auths,auth.authTeacher,sController.getChat);
 router.get("/sprofil",auths,auth.authTeacher,sController.getProfil);
 router.post("/create-folder",auths,auth.authTeacher,[body("foldername","Nom de dossier invalide").trim().not().isEmpty().withMessage("Nom du dossier vide").isLength({min : 3 }).withMessage("le nom du dossier doit être au moins de 3 caractères")],sController.postFolder);
 router.post("/add-content",auths,auth.authTeacher,sController.addContent);

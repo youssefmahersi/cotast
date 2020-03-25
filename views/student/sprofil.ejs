@@ -4,10 +4,15 @@
         <%- include("../includes/body.ejs"); %>
         <%- include("../includes/navigation3.ejs"); %>
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap" rel="stylesheet"> 
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:300i,400,500i&display=swap" rel="stylesheet">
         <div class="container">
                 <div class="row ">
                     <br>
-                    <div class="col-md-6 offset-md-3 col-sm-12 bg-white" style="margin-top: 10px; ">
+                    <div class="col-md-6 offset-md-3 col-sm-12 bg-white" style="margin-top: 10px;   
+                    box-shadow: 0 2px 3px #ccc;
+                    border : 1px solid #eee;
+                    
+                    box-sizing: border-box;">
                         <ul class="nav nav-tabs">
                             <li class="nav-item">
                                 <a href="" data-target="#profile" data-toggle="tab" class="nav-link <%= editMode === 'true' ? '' : 'active' %>">Profil</a>
@@ -17,15 +22,18 @@
                                 <a href="" data-target="#edit" data-toggle="tab" class="nav-link <%= editMode === 'true' ? 'active' : '' %>">
                                     Modifier</a>
                             </li>
+                            <li class="nav-item">
+                                <a href="" data-target="#joinGroupe" data-toggle="tab" class="nav-link <%= editMode === 'true' ? 'active' : '' %>">
+                                    Groupe</a>
+                            </li>
                         </ul>
                         <div class="tab-content py-4">
                             <div class="tab-pane <%= editMode === 'true' ? '' : 'active'%>" id="profile">
-                                <h1 ><i class="fas fa-user-circle"></i><h4 class="mb-4">
-                                        Profil</h4></h1>
+                                <h1 ><i class="fas fa-user-circle"></i><h5 class="text-primary" style="font-family: 'Source Sans Pro', sans-serif;"> <%= username%></h5></h1>
                                 
                                 <div class="row">
                                     <div class="col-md-7">
-                                        <h5 class="text-primary" style="font-family: 'Source Sans Pro', sans-serif;"> <%= username%></h5>
+                                        
                                         <h5 class="text-secondary" style="font-family: 'Source Sans Pro', sans-serif;"> <%= email%></h5>
                                         <h6 class="text-secondary" style="font-family: 'Source Sans Pro', sans-serif; "><%= school%></h6>
                                         
@@ -76,12 +84,31 @@
                                     <div class="alert alert-secondary"><%= message2 %></div>
                                     <%}%>
                             </div>
+                            <div class="tab-pane" id="joinGroupe">
+                            
+                                <div class="form-group ">
+                                    <label for="roomName">
+                                    nom de groupe</label>
+                                <input type="text" class="form-control" id="roomname" name="roomnaame">
+                                </div>
+                               
+                                <div class="form-group">
+                                    <label for="roomPassword">Password de groupe</label>
+                                    <input type="password" class="form-control" id="roompassword" name="roompassword">
+                                    </div>
+                                      <button type="click" class="btn btn-primary" onclick="joinRoom(this,'<%= csrfToken %>')"><i class="fas fa-plus"></i> Groupe</button>
+                          
+                            <% if(message){%>
+                                <div class="text-center"><p class="text-danger"><%= message %></p></div>
+                                <%}%>
+                           
+                        </div>
                         </div>
                     </div>
                    
                     <div class="col-md-6 offset-md-3 col-sm-12 ">
                         <br>
-                            <h1 class="text-muted text-center" style="font-family: 'Source Sans Pro', sans-serif; font-size: 30px;">
+                            <h1 class="text-muted text-center" style="font-family: 'Montserrat', sans-serif;font-weight: bold; font-size: 30px;">
                                 Organiser vos fichiers</h1>
                             <br>
                             <div id="formfolder">
@@ -96,7 +123,7 @@
                                     </form>
                                     <% if(message){%>
                                         <br>
-                                    <div class="alert alert-secondary"><%= message %></div>
+                                    <div class="text-danger text-center"><%= message %></div>
                                     <%}%>
     
                             </div>
@@ -104,14 +131,14 @@
                             <div id="fileOrganization">
                                     <% if (folders.length > 0) { %>
                                         <% for (let folder of folders){%>
-                                            <span class="badge badge-dark" type="button" data-toggle="collapse" data-target="#<%= folder.foldername%>" aria-expanded="false" aria-controls="collapseExample"><i class="fas fa-folder" ></i> <%= folder.foldername%></span>
+                                            <span class="badge badge-dark" type="button" data-toggle="collapse" data-target="#<%= folder.foldername%>" aria-expanded="false" aria-controls="collapseExample" style="padding: 7px; border-radius: 10px; font-size: 12px;"><i class="fas fa-folder" ></i> <%= folder.foldername%></span>
                                             <div class="collapse" id="<%= folder.foldername%>">
-                                                    <br>
+                                                    
                                                       <div class="">
-                                                            <ul class="list-group list-group-flush">
+                                                            <ul class="list-group list-group-flush" >
                                                             <% for (let content of folder.contents){%>
                                                                 
-                                                                <li class="list-group-item"> <a href="<%= content%>" class="text-success text-left"><script>var str = "<%= content%>"; 
+                                                                <li class="list-group-item" style="margin: 3px 0; background-color: transparent; border: none; padding: 3px;"> <a href="<%= content%>" class="text-success text-left" ><i class="fas fa-circle" style="color: black; font-size: 9px;"></i> <script>var str = "<%= content%>"; 
                                                                 document.write(str.slice(33,str.length));
                                                                 </script></a></li>
                                                                 <%}%>
@@ -167,6 +194,31 @@
                     
 </body>
 <%- include("../includes/script.ejs");%>
+<script>
+    const joinRoom = (btn,csrf)=>{
+      const roomname =document.getElementById('roomname');
+      const roompassword = document.getElementById('roompassword');
+      console.log(roompassword.value);
+      fetch("/sjoinroom",{
+        method :"POST",
+        headers : {
+          "content-type":"application/json"
+        },
+        body:JSON.stringify({
+          roomname : roomname.value,
+          roompassword : roompassword.value,
+          _csrf : csrf
+        })
+      }).then(result => {
+            return result.json();
+          }).then(data =>{
+            if(data.message === "Success!!"){
+              return window.location= "/schat";
+            }
+            Swal.fire(data.message);
+          })
+    }
+    </script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script> 
 <script src="/js/logout2.js"></script>
 </html>

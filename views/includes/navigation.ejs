@@ -1,4 +1,5 @@
-<link rel="icon" href="/assets/cotast AI.svg" />
+<link rel="shortcut icon"  href="assets/cotast AI.svg"/>
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="/thome">Cotast </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -6,15 +7,9 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ">
-        <li class="<%= path === 'chat' ? 'nav-item active' : 'nav-item' %>">
-          <a class="nav-link" href="/tchat"><i class="fas fa-comments"></i> Chat<span class="sr-only">(current)</span></a>
-        </li>
-        
         <li class="<%= path === 'profil' ? 'nav-item active' : 'nav-item' %>">
           <a class="nav-link " href="/tprofil"><i class="fas fa-user-circle"></i> Profil</a>
         </li>
-        
-          <% if(path === "chat"){ %>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Groupes
@@ -33,7 +28,7 @@
                        </div>
                
             </li>
-            <%}%>
+          
       </ul>
     </div>
   </nav>

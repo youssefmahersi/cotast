@@ -21,6 +21,11 @@ const userSchema =  new Schema({
     status : {
         type :String,
         required : true
+    },
+    isVerified: { 
+        type: Boolean, 
+        default: false ,
+        required:true
     }
 });
 
